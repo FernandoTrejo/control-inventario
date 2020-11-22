@@ -1,0 +1,66 @@
+<script type="module">
+  import {Transaccion} from './src/classes/Transaccion.js';
+  import {Historial} from './src/classes/Historial.js';
+  import {Inventario} from './src/classes/Inventario.js';
+  import {Money} from './src/classes/Money.js';
+  
+  let historial = new Historial();
+  let t1 = new Transaccion('01/01/2019', new Date('01/01/2019'), 'Inventario inicial', 150, new Money(10), '0101');
+  let t2 = new Transaccion('02/01/2019', new Date('02/01/2019'), 'Segunda compra', 150, new Money(10.10), '0101');
+  let t3 = new Transaccion('03/01/2019', new Date('03/01/2019'), 'Tercera compra', 350, new Money(9.98), '0101');
+  
+  let t4 = new Transaccion('01/01/2019', new Date('01/01/2019'), 'Primera compra', 150, new Money(10), '0202');
+  let t5 = new Transaccion('02/01/2019', new Date('02/01/2019'), 'Segunda compra', 150, new Money(10.10), '0202');
+  let t6 = new Transaccion('03/01/2019', new Date('03/01/2019'), 'Tercera compra', 350, new Money(9.98), '0202');
+    
+    
+  historial.agregarInicial(t1);
+  historial.agregarCompra(t2);
+  historial.agregarCompra(t3);
+  historial.agregarCompra(t4);
+  historial.agregarCompra(t5);
+  historial.agregarCompra(t6);
+  
+  let t7 = new Transaccion('04/01/2019', new Date('04/01/2019'), 'Primera venta', 550, new Money(0), '0101');
+  historial.agregarVenta(t7);
+  
+  let t8 = new Transaccion('05/01/2019', new Date('05/01/2019'), 'Devolucion sobre venta', 150, new Money(0), '0101');
+  historial.agregarDevolucionVenta(t8);
+  
+  let t9 = new Transaccion('06/01/2019', new Date('06/01/2019'), 'Cuarta Compra', 700, new Money(9.95), '0101');
+  historial.agregarCompra(t9);
+  
+  let t10 = new Transaccion('07/01/2019', new Date('07/01/2019'), 'Segunda venta', 300, new Money(0), '0101');
+  historial.agregarVenta(t10);
+  
+  let t11 = new Transaccion('07/01/2019', new Date('07/01/2019'), 'Segunda venta', 100, new Money(0), '0101');
+  historial.agregarVenta(t11);
+  
+  let t12 = new Transaccion('07/01/2019', new Date('07/01/2019'), 'Segunda venta', 355, new Money(0), '0101');
+  historial.agregarVenta(t12);
+  
+  let t13 = new Transaccion('08/01/2019', new Date('08/01/2019'), 'Quinta Compra', 900, new Money(10.20), '0101');
+  historial.agregarCompra(t13);
+  
+  let t14 = new Transaccion('09/01/2019', new Date('09/01/2019'), 'Devolucion sobre compra', 200, new Money(10.20), '0101');
+  historial.agregarDevolucionCompra(t14);
+  
+  
+  //prueba
+  let n1 = new Transaccion('03/01/2019', new Date('03/01/2019'), 'Inicial new product', 300, new Money(5), '0303');
+  let n2 = new Transaccion('04/01/2019', new Date('04/01/2019'), 'Compra new product', 100, new Money(5.5), '0303');
+  let n3 = new Transaccion('05/01/2019', new Date('05/01/2019'), 'Venta new product', 175, new Money(0), '0303');
+    
+  historial.agregarInicial(n1);
+  historial.agregarCompra(n2);
+  historial.agregarVenta(n3);
+  
+  let datosHistorial = historial.exportarDatos();
+  
+  let inventario01 = new Inventario('0101', datosHistorial, Inventario.PROMEDIO);
+  let inventario03 = new Inventario('0303', datosHistorial, Inventario.PROMEDIO);
+  
+  console.log(inventario01);
+  console.log(inventario03);
+  
+</script>

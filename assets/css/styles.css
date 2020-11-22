@@ -1,0 +1,40 @@
+fieldset{
+  background-color: #c3cbd4; 
+  padding: 6px; 
+  border-radius: 8px;
+}
+
+legend{
+  background-color:#FFF;
+  font-size: 17px;
+  border-radius: 8px;
+  padding: 3px 10px 3px 10px;
+  width: auto;
+}
+
+.separator{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+div[class="card"]{
+  border-radius: 10px;
+}
+
+button{
+  border-radius: 8px;
+}
+
+.line-success{
+  background-color: #4cbb54;
+  color: #fff;
+}
+
+.line-error{
+  background-color: #d7825f;
+  color: #fff;
+}
+
+body{
+  font-family: times;
+}

@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+ 
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="assets/vendor/bootstrap/css/bootstrap.min.css">
+    <link href="assets/vendor/fonts/circular-std/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/libs/css/style.css">
+    <link rel="stylesheet" href="assets/vendor/fonts/fontawesome/css/fontawesome-all.css">
+    <link rel="stylesheet" href="assets/vendor/datepicker/tempusdominus-bootstrap-4.css" />
+    <!-- styles -->
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    
+    <script type="module" src="src/pages/session.js"></script>
+    
+    <title>Proveedores</title>
+</head>
+
+<body>
+    <div class="dashboard-main-wrapper">
+
+<div class="dashboard-header">
+    <nav class="navbar navbar-expand-lg fixed-top" style="background: #47519c"><!--7271c4-->
+        <a class="navbar-brand text-white" href="index.html">Inventario</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse " id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto navbar-right-top">
+                
+            </ul>
+        </div>
+    </nav>
+</div>
+
+        <div include-html="pages/main/sidebar.html"></div>
+
+        <div class="dashboard-wrapper">
+            <div class="container-fluid dashboard-content">
+              <div class="row">
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                      <div class="page-header">
+              
+                          <div class="page-breadcrumb">
+                              <nav aria-label="breadcrumb">
+                                  <ol class="breadcrumb">
+                                      <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">MENÚ</a></li>
+                                      <li class="breadcrumb-item active" aria-current="page">PROVEEDORES</li>
+                                  </ol>
+                              </nav>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              
+              <!-- listado de Proveedores-->
+              <div class="row d-flex justify-content-center">
+                <button type="button" id="btnAbrirModal" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter"><i class=""></i> CREAR NUEVO</button>
+              </div>
+              
+              <div class="separator"></div>
+              
+              
+              <div class="row d-flex justify-content-center">
+                <div class="col-md-12 col-lg-10 col-xl-8">
+        
+                  <div class="accrodion-regular" id="accordion-start">
+                    <div id="divProveedores">
+              
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+
+              
+          </div>
+        </div>
+    </div>
+        <!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">PROVEEDOR</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <form action="">
+            <div class="card">
+              <div class="card-body">
+                <div class="form-group">
+                  <h5 class="mb-0">CODIGO</h5>
+                    <div class="input-group" id="" data-target-input="nearest">
+                        <input type="text" class="form-control" id="txtCodigo" placeholder="Ingresar Codigo"/>
+                        <input type="hidden" id="inputEditar" value="CREACION" />
+                    </div>
+                    <small id="txtCodigoError" class="form-text text-danger">* Este campo es obligatorio
+                    </small>
+                </div>
+                <div class="form-group">
+                  <h5 class="mb-0">NOMBRE</h5>
+                    <div class="input-group" id="" data-target-input="nearest">
+                        <input type="text" class="form-control" id="txtNombre" placeholder="Ingresar Nombre"/>
+                    </div>
+                    <small id="txtNombreError" class="form-text text-danger">* Este campo es obligatorio
+                    </small>
+                    
+                </div>
+                <div class="form-group">
+                  <h5 class="mb-0">DIRECCION</h5>
+                    <div class="input-group" id="" data-target-input="nearest">
+                        <input type="text" class="form-control" id="txtDireccion" placeholder="Ingresar Direccion"/>
+                    </div>
+                    <small id="txtDireccionError" class="form-text text-danger">
+                    </small>
+                </div>
+                <div class="form-group">
+                  <h5 class="mb-0">TELEFONO</h5>
+                    <div class="input-group" id="" data-target-input="nearest">
+                        <input type="text" class="form-control" id="txtTelefono" placeholder="Ingresar Telefono"/>
+                    </div>
+                    <small id="txtTelefonoError" class="form-text text-danger">
+                    </small>
+                    
+                </div>
+                <div class="form-group">
+                  <h5 class="mb-0">EMAIL</h5>
+                    <div class="input-group" id="" data-target-input="nearest">
+                        <input type="text" class="form-control" id="txtEmail" placeholder="Ingresar Email"/>
+                    </div>
+                    <small id="txtEmailError" class="form-text text-danger">
+                    </small>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+                <div class="card-body border-top">
+                    <h5>DESCRIPCION</h5>
+                    <div class="form-group">
+                        <textarea class="form-control" id="txtDescripcion" rows="2"></textarea>
+                    </div>
+                </div>
+            </div>
+            <h5 id="msgFallido" class="mb-0 text-danger d-none"></h5>
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" type="button" data-dismiss="modal" id="btnAgregarNuevo" disabled="true">GUARDAR</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">CANCELAR</button>
+      </div>
+    </div>
+  </div>
+</div> 
+
+    <script src="src/pages/global.js"></script>
+    <script src="src/JSHELEMENTS/functions.js"></script>
+    <script src="src/JSHELEMENTS/validations.js"></script>
+    
+    <!-- Optional JavaScript -->
+    <!-- jquery 3.3.1 -->
+    <script src="assets/vendor/jquery/jquery-3.3.1.min.js"></script>
+    <!-- bootstap bundle js -->
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+    <!-- slimscroll js -->
+    <script src="assets/vendor/slimscroll/jquery.slimscroll.js"></script>
+    <!-- main js -->
+    <script src="assets/libs/js/main-js.js"></script>
+    
+    <!-- datepicker -->
+    <script src="assets/vendor/datepicker/moment.js"></script>
+    <script src="assets/vendor/datepicker/tempusdominus-bootstrap-4.js"></script>
+    <script src="assets/vendor/datepicker/datepicker.js"></script>
+    
+    <script type="module" src="src/pages/proveedores.js"></script>
+    
+</body>
+ 
+</html>

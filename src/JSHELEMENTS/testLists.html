@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+</head>
+
+<body>
+
+<div id="div"></div>
+
+<script src="functions.js">
+</script>
+
+<script type="module">
+  import {ListProperties, UnorderedList, List} from './HTMLElements/List.js';
+  let items = ["manzanas","peras","mangos","piña","melon"];
+  let props = new ListProperties(List.UNORDERED);
+  props.addPropMain("type", `${UnorderedList.CIRCLE}`);
+  props.addPropMain("style", ["background:blue;"]);
+  props.addPropItems("style", ["background:black;", "color:white;"]);
+  props.addPropItems("style", "padding:10px 5px;");
+  
+  let htmlList = new UnorderedList(items, props);
+  
+  htmlRender("div",htmlList.getHtml());
+</script>
+</body>
+
+</html>

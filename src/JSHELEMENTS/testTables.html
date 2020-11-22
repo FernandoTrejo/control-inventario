@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      .table-header{
+        background: red;
+        color: white;
+        font-size: 15px;
+        padding:10px 10px;
+      }
+      
+      .table{
+        background: black;
+        color: white;
+      }
+    </style>
+    <title></title>
+</head>
+
+<body>
+
+<div id="div"></div>
+
+<script src="functions.js">
+</script>
+
+<script type="module">
+  import {Table, TableProperties, Header, HeaderProperties, Body, BodyProperties, Footer, FooterProperties} from './HTMLElements/Table.js';
+  
+  let headers = ["Letra","Pais","Fruta","Animal","Color"];
+  let propsHeader = new HeaderProperties();
+  propsHeader.addPropMain("class","table-header");
+  let tableHeader = new Header(headers, propsHeader);
+  
+  let data = [
+    ["A","Alemania","Aguacate","Araña","Amarillo"],
+    ["E","Escocia","Ejotes","Elefante","Esmalte"],
+    ["I","Italia","Imabue","Iguana","Iluminado"],
+    ["O","Oman","Oliva","Orangutan","Oro"],
+    ["U","Ucrania","Uva","Umapa","Uesho"],
+  ];
+  let propsBody = new BodyProperties();
+  let tableBody = new Body(data, propsBody);
+  
+  let footer = ["--","--","--","--","--"];
+  let propsFooter = new FooterProperties();
+  let tableFooter = new Footer(footer, propsFooter);
+  
+  let propsTable = new TableProperties();
+  propsTable.addPropMain("class","table")
+  let table = new Table("BachilleratoStop", tableHeader, tableBody, tableFooter, propsTable);
+  
+  htmlRender("div",table.getHtml());
+</script>
+</body>
+
+</html>
