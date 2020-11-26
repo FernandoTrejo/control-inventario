@@ -81,7 +81,8 @@ class PROMEDIO{
       'existencias': 0,
       'costoEntradas': new Money(0),
       'costoSalidas': new Money(0),
-      'costoExistencias': new Money(0)
+      'costoExistencias': new Money(0),
+      'precioPromedio': new Money(0)
     };
     
     if(this.datos.length > 0){
@@ -117,6 +118,9 @@ class PROMEDIO{
       result.costoEntradas = Money.calculateMoneySus(Money.calculateMoneySum([costoInicial, costoCompras]), costoDevolucionCompras);
       result.costoSalidas = Money.calculateMoneySus(costoVentas,costoDevolucionVentas);
       result.costoExistencias = Money.calculateMoneySus(result.costoEntradas, result.costoSalidas);
+      
+      let lastRow = this.datos[this.datos.length - 1];
+      result.precioPromedio = lastRow[7];
     }
     
     return result;

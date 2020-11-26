@@ -15,6 +15,7 @@ class Inventario{
     this.costoEntradas = null;
     this.costoSalidas = null;
     this.costoExistencias = null;
+    this.precioPromedio = null;
     
     this.procesarDatos();
   }
@@ -68,6 +69,10 @@ class Inventario{
     return this.costoExistencias;
   }
   
+  getPrecioPromedio(){
+    return this.precioPromedio;
+  }
+  
   //SETTERS
   setCodigoProducto(codigoProducto){
     this.codigoProducto = codigoProducto;
@@ -117,6 +122,10 @@ class Inventario{
     this.costoExistencias = costo;
   }
   
+  setPrecioPromedio(precio){
+    this.precioPromedio = precio;
+  }
+  
   extraerTransacciones(historial){
     let transacciones = [];
     transacciones = historial.filter(transaccion => transaccion.getCodigoProducto() == this.codigoProducto);
@@ -146,6 +155,7 @@ class Inventario{
     this.setCostoEntradas(info.costoEntradas);
     this.setCostoSalidas(info.costoSalidas);
     this.setCostoExistencias(info.costoExistencias);
+    this.setPrecioPromedio(info.precioPromedio);
   }
   
   //METODOS VALUACION

@@ -32,6 +32,7 @@ class Historial extends Datos{
   agregarCompra(compra){
     compra.setTipoTransaccion(Transaccion.COMPRA);
     this.compras.push(compra);
+    console.log(compra)
   }
   
   agregarDevolucionCompra(devolucion){
@@ -62,6 +63,87 @@ class Historial extends Datos{
   
   consultarDevolucionesCompras(){
     return this.ordenarPorFecha(this.devolucionesCompras);
+  }
+  
+  setIniciales(iniciales){
+    this.iniciales = iniciales;
+  }
+  
+  setVentas(ventas){
+    this.ventas = ventas;
+  }
+  
+  setCompras(compras){
+    this.compras = compras;
+  }
+  
+  setDevolucionesVentas(devoluciones){
+    this.devolucionesVentas = devoluciones;
+  }
+  
+  setDevolucionesCompras(devoluciones){
+    this.devolucionesCompras = devoluciones;
+  }
+  
+  eliminarTransaccion(indice, tipoTransaccion){
+    let transacciones = [];
+    switch (tipoTransaccion) {
+      case Transaccion.INVENTARIO_INICIAL:
+        transacciones = this.consultarIniciales();
+        transacciones.splice(indice, 1);
+        break;
+      
+      case Transaccion.COMPRA:
+        transacciones = this.consultarCompras();
+        transacciones.splice(indice, 1);
+        break;
+        
+      case Transaccion.VENTA:
+        transacciones = this.consultarVentas();
+        transacciones.splice(indice, 1);
+        break;
+        
+      case Transaccion.DEVOLUCION_VENTA:
+        transacciones = this.consultarDevolucionesVentas();
+        transacciones.splice(indice, 1);
+        break;
+        
+      case Transaccion.DEVOLUCION_COMPRA:
+        transacciones = this.consultarDevolucionesCompras();
+        transacciones.splice(indice, 1);
+        break;
+    }
+  }
+  
+  buscarTransaccion(indice, tipoTransaccion){
+    let transaciones = [];
+    switch (tipoTransaccion) {
+      case Transaccion.INVENTARIO_INICIAL:
+        transaciones = this.consultarIniciales();
+        return transaciones[indice];
+      
+      case Transaccion.COMPRA:
+        transaciones = this.consultarCompras();
+        return transaciones[indice];
+        
+      case Transaccion.VENTA:
+        transaciones = this.consultarVentas();
+        return transaciones[indice];
+        
+      case Transaccion.DEVOLUCION_VENTA:
+        transaciones = this.consultarDevolucionesVentas();
+        return transaciones[indice];
+        
+      case Transaccion.DEVOLUCION_COMPRA:
+        transaciones = this.consultarDevolucionesCompras();
+        return transaciones[indice];
+    }
+  }
+  
+  editarTransaccion(indice, nuevaTransaccion, tipoTransaccion){
+    let transaccion = this.buscarTransaccion(indice, tipoTransaccion);
+    transaccion.copyFromObject(nuevaTransaccion);
+    transaccion.setTipoTransaccion(tipoTransaccion);
   }
   
   exportarDatos(){

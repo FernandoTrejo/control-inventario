@@ -2,6 +2,7 @@ import {Default} from './Default.js';
 import {Historial} from '../classes/Historial.js';
 import {Entidad} from '../classes/Entidad.js';
 import {Producto} from '../classes/Producto.js';
+import {Transaccion} from '../classes/Transaccion.js';
 import {Money} from '../classes/Money.js';
 
 class Storage{
@@ -41,17 +42,18 @@ class Storage{
   }
   
   static buildStorageObject(name,obj){
-    let iniciales = obj.historial.iniciales.map(elemento => new Transaccion(elemento.fechaString, new Date(elemento.fechaString), elemento.detalle, elemento.cantidad, new Money(elemento.montoUnitario), elemento.codigoProducto, elemento.entidad));
-    let compras = obj.historial.compras.map(elemento => new Transaccion(elemento.fechaString, new Date(elemento.fechaString), elemento.detalle, elemento.cantidad, new Money(elemento.montoUnitario), elemento.codigoProducto, elemento.entidad));
-    let ventas = obj.historial.ventas.map(elemento => new Transaccion(elemento.fechaString, new Date(elemento.fechaString), elemento.detalle, elemento.cantidad, new Money(elemento.montoUnitario), elemento.codigoProducto, elemento.entidad));
-    let devolucionesCompras = obj.historial.devolucionesCompras.map(elemento => new Transaccion(elemento.fechaString, new Date(elemento.fechaString), elemento.detalle, elemento.cantidad, new Money(elemento.montoUnitario), elemento.codigoProducto, elemento.entidad));
-    let devolucionesVentas = obj.historial.devolucionesVentas.map(elemento => new Transaccion(elemento.fechaString, new Date(elemento.fechaString), elemento.detalle, elemento.cantidad, new Money(elemento.montoUnitario), elemento.codigoProducto, elemento.entidad));
+    console.log(obj)
+    let iniciales = obj.historial.iniciales.map(elemento => new Transaccion(elemento.fechaString, new Date(elemento.fechaString), elemento.detalle, elemento.cantidad, new Money(elemento.montoUnitario.completeQuantity), elemento.codigoProducto, elemento.entidad, elemento.tipoTransaccion));
+    let compras = obj.historial.compras.map(elemento => new Transaccion(elemento.fechaString, new Date(elemento.fechaString), elemento.detalle, elemento.cantidad, new Money(elemento.montoUnitario.completeQuantity), elemento.codigoProducto, elemento.entidad, elemento.tipoTransaccion));
+    let ventas = obj.historial.ventas.map(elemento => new Transaccion(elemento.fechaString, new Date(elemento.fechaString), elemento.detalle, elemento.cantidad, new Money(elemento.montoUnitario.completeQuantity), elemento.codigoProducto, elemento.entidad, elemento.tipoTransaccion));
+    let devolucionesCompras = obj.historial.devolucionesCompras.map(elemento => new Transaccion(elemento.fechaString, new Date(elemento.fechaString), elemento.detalle, elemento.cantidad, new Money(elemento.montoUnitario.completeQuantity), elemento.codigoProducto, elemento.entidad, elemento.tipoTransaccion));
+    let devolucionesVentas = obj.historial.devolucionesVentas.map(elemento => new Transaccion(elemento.fechaString, new Date(elemento.fechaString), elemento.detalle, elemento.cantidad, new Money(elemento.montoUnitario.completeQuantity), elemento.codigoProducto, elemento.entidad, elemento.tipoTransaccion));
     
-    let historial = new Historial(iniciales, compras, ventas, devolucionesCompras, devolucionesVentas);
+    let historial = new Historial(iniciales, ventas, compras, devolucionesCompras, devolucionesVentas);
     
     let entidades = obj.entidades.map(entidad => new Entidad(entidad.codigo, entidad.nombre, entidad.direccion, entidad.telefono, entidad.email, entidad.descripcion, entidad.tipo));
     
-    let productos = obj.productos.map(producto => new Producto(producto.codigo, producto.nombre, producto.unidad));//pendiente de definir
+    let productos = obj.productos.map(producto => new Producto(producto.codigo, producto.nombre, producto.unidad, producto.descripcion));//pendiente de definir
     let config = obj.config;
     
     let finalObject = new Default(historial, entidades, productos, config);

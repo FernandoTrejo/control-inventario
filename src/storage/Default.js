@@ -1,4 +1,5 @@
 import {Historial} from '../classes/Historial.js';
+import {Transaccion} from '../classes/Transaccion.js';
 
 class Default{
   constructor(historial = new Historial(), entidades = [], productos = [], config = []){
@@ -64,7 +65,21 @@ class Default{
     let busqueda = this.productos.filter(producto => producto.getCodigo() == codigo);
     return (busqueda.length > 0) ? busqueda[0] : null;
   }
-  /*FIN FUNCIONES ENTIDADES*/
+  /*FIN FUNCIONES PRODUCTOS*/
+  
+  /*FUNCIONES TRANSACCIONES*/
+  buscarTransacciones(codigoProducto, tipoTransaccion){
+    if(this.buscarProducto(codigoProducto) != null){
+      switch (tipoTransaccion) {
+        case Transaccion.INVENTARIO_INICIAL:
+          let transaccionesTotales = this.historial.consultarIniciales();
+          let transaccionesProducto = transaccionesTotales.filter(transaccion => transaccion.getCodigoProducto() == codigoProducto);
+          return transaccionesProducto;
+      }
+      
+      return [];
+    }
+  }
 }
 
 export {Default};

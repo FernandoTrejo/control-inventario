@@ -1,8 +1,8 @@
 import {Money} from './Money.js';
 
 class Transaccion{
-  constructor(fechaString, fechaDate, detalle, cantidad, montoUnitario, codigoProducto, entidad = null){
-    this.tipoTransaccion = -1;
+  constructor(fechaString, fechaDate, detalle, cantidad, montoUnitario, codigoProducto, entidad = null, tipoTransaccion = -1){
+    this.tipoTransaccion = tipoTransaccion;
     this.fechaString = fechaString;
     this.fechaDate = fechaDate;
     this.detalle = detalle;
@@ -80,6 +80,73 @@ class Transaccion{
   
   setEntidad(entidad){
     this.entidad = entidad;
+  }
+  
+  static fromArray(data){
+    return new Transaccion(
+      data[0],
+      new Date(data[0]),
+      data[1],
+      data[2],
+      new Money(data[3]),
+      data[4],
+      data[5]
+    );
+  }
+  
+  copyFromObject(transaccion){
+    this.fechaString = transaccion.fechaToString();
+    this.fechaDate = transaccion.getFecha(); 
+    this.detalle = transaccion.getDetalle();
+    this.cantidad = transaccion.getCantidad();
+    this.montoUnitario = transaccion.getMontoUnitario();
+    this.codigoProducto = transaccion.getCodigoProducto();
+    this.entidad = transaccion.getEntidad();
+  }
+  
+  toArray(){
+    let entidad = this.obtenerEntidad(this.tipoTransaccion);
+    let montoTotal = this.getMontoTotal();
+    
+    return [
+      ['Fecha', this.fechaString],
+      ['Detalle', this.detalle],
+      ['Cantidad', this.cantidad],
+      ['Monto Unitario', this.montoUnitario.toString()],
+      ['Total', montoTotal.toString()],
+      ['Producto', this.codigoProducto],
+      [entidad, this.entidad]
+    ];
+  }
+  
+  fieldsToArray(){
+    return [
+      this.fechaString,
+      this.detalle,
+      this.cantidad,
+      this.montoUnitario.quantity,
+      this.codigoProducto,
+      this.entidad
+    ];
+  }
+  
+  obtenerEntidad(tipo){
+    switch (tipo) {
+      case Transaccion.INVENTARIO_INICIAL:
+        return 'Proveedor';
+      
+      case Transaccion.COMPRA:
+        return 'Proveedor';
+        
+      case Transaccion.VENTA:
+        return 'Cliente';
+        
+      case Transaccion.DEVOLUCION_COMPRA:
+        return 'Proveedor';
+        
+      case Transaccion.DEVOLUCION_VENTA:
+        return 'Cliente';
+    }
   }
   
   static get COMPRA(){
