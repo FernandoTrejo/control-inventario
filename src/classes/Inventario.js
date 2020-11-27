@@ -146,6 +146,7 @@ class Inventario{
   }
   
   establecerInfo(info){
+    console.log(info)
     this.setDatos(info.datos);
     this.setInicial(info.inicial);
     this.setCostoInicial(info.costoInicial);

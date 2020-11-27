@@ -51,11 +51,9 @@ function eliminarTransaccion(indice){
   console.log(store)
 }
 
-function obtenerPrecioPromedio(codigo){
+function obtenerInventario(codigo){
   let historial = store.getObject().getHistorial().exportarDatos();
-  let inventario = new Inventario(codigo, historial, Inventario.PROMEDIO);
-  console.log(inventario);
-  return inventario.getPrecioPromedio();
+  return new Inventario(codigo, historial, Inventario.PROMEDIO);
 }
 
 /*FIN FUNCIONES PRINCIPALES*/
@@ -236,8 +234,23 @@ jQuery(document).ready(function($) {
     htmlEventListener('selectProductos', 'change', function(){
       habilitarBotonGuardar();
       if(nonEmptyFields([htmlValue('selectProductos')])){
-        let precioPromedio = obtenerPrecioPromedio(htmlValue('selectProductos'));
+        let inventario = obtenerInventario(htmlValue('selectProductos'));
+        console.log(inventario)
+        let precioPromedio = inventario.getPrecioPromedio();
         htmlValue('numPrecio', precioPromedio.quantity);
+        
+        let existencias = inventario.getExistencias();
+        let numCantidad = htmlElement('numCantidad');
+        numCantidad.placeholder = 'Existencias: ' + existencias;
+        console.log(numCantidad)
+        
+        htmlEventListener('numCantidad','keyup', function(){
+          if(Number(htmlValue('numCantidad')) > existencias){
+            htmlText('numCantidadError', 'La cantidad ingresada supera a la cantidad en existencias.');
+          }else{
+            htmlText('numCantidadError', '');
+          }
+        });
       }
     });
     //agregar los campos obligatorios

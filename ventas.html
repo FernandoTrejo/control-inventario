@@ -122,11 +122,12 @@
                 <div class="form-group">
                   <h5 class="mb-0">Cantidad (obligatorio)</h5>
                     <div class="input-group" id="" data-target-input="nearest">
-                        <input type="number" class="form-control" id="numCantidad" placeholder="0"/>
+                        <input type="number" class="form-control" id="numCantidad" placeholder="Existencias: 0"/>
                         <input type="hidden" id="inputEditar" value="CREACION" />
                         <input type="hidden" id="inputIdTransaccion" value="-1" />
                     </div>
-                    
+                    <small id="numCantidadError" class="form-text text-danger">
+                    </small>
                 </div>
                 <div class="form-group">
                   <h5 class="mb-0">Precio (sólo lectura)</h5>

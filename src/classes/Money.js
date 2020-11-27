@@ -108,6 +108,8 @@ class Money{
     if(Number(den) != 0){
       let result = Number(num) / Number(den);
       return new Money(result);
+    }else{
+      return new Money(0);
     }
   }
   

@@ -58,21 +58,6 @@ function guardarProducto(producto, transaccion){
   }
 }
 
-function eliminarProducto(codigo){ 
-
-  //eliminar producto
-  let productos = obtenerProductos();
-  let productosRestantes = productos.filter(producto => producto.getCodigo() != codigo);
-  store.getObject().setProductos(productosRestantes);
-  
-  //eliminar transacciones del historial
-  let transacciones = obtenerTransacciones();
-  let transaccionesRestantes = transacciones.filter(transaccion => transaccion.getCodigoProducto() != codigo);
-  store.getObject().getHistorial().setIniciales(transaccionesRestantes);
-  store.save();
-  console.log(store)
-}
-
 /*FIN FUNCIONES PRINCIPALES*/
 
 /*FUNCIONES CONSTANTES DE LA PAGINA*/
@@ -100,7 +85,8 @@ function mostrarListaProductos(){
   document.querySelectorAll('.delete-asi').forEach(item => {
     item.addEventListener('click', event => {
       let res = item.id.split("-");
-      eliminarProducto(res[2]);
+      store.getObject().eliminarProducto(res[2]);
+      store.save();
       mostrarListaProductos();
     })
   });

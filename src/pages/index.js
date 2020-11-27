@@ -1,51 +1,79 @@
-import { Storage } from '../storage/Storage.js';
+import {Producto} from '../classes/Producto.js';
+import {Entidad} from '../classes/Entidad.js';
+import {Transaccion} from '../classes/Transaccion.js';
+import {PROMEDIO} from '../classes/Valuacion.js';
+import {Inventario} from '../classes/Inventario.js';
+import {Storage} from '../storage/Storage.js';
+import {Table, TableProperties, Header, HeaderProperties, Body, BodyProperties, Footer, FooterProperties} from '../JSHELEMENTS/HTMLElements/Table.js';
 
 let session = Storage.getSessionData();
-let store = null;
+let store = null; 
 
-function refreshStore(){
-  store = Storage.getInstance(session.getObject().empresa);
+/*FUNCIONES PRINCIPALES*/
+function reloadStore(){
+  store = Storage.getInstance('INV-' + session.getObject().empresa);
+  console.log(store)
 }
-function mostrarTimeline(){
-  let resultHtml = `<section class="cd-timeline js-cd-timeline"><div class="cd-timeline__container">`;
-  
-  let asientos = store.getObject().getLibroDiario().getAsientos();
-  agregarNombreEmpresa(store.getObject().getConfig().empresa.nombreComercial);
-  
-  if(asientos.length > 0){
-    let fecha01 = asientos[0].getFechaString();
-    let fecha02 = asientos[asientos.length - 1].getFechaString();
-    document.getElementById("txtDaterange").value = `${fecha01} - ${fecha02}`;
-    for(let asiento of asientos){
-      let enlace = (Number(asiento.getTipo()) == 1) ? "simple.html" : "compuesto.html";
-      let msg = (Number(asiento.getTipo()) == 1) ? "Ver asientos simples" : "Ver asientos compuestos";
-      resultHtml += `
-       <div class="cd-timeline__block js-cd-block">
-          <div class="cd-timeline__img cd-timeline__img--picture js-cd-img">
-              <img src="assets/vendor/timeline/img/notas.svg" alt="Picture">
-          </div>
-          <!-- cd-timeline__img -->
-          <div class="cd-timeline__content js-cd-content">
-              <h3>${asiento.getConcepto()}</h3>
-              <p>${asiento.getComentarios()}</p>
-              <a href="${enlace}" class="btn btn-primary btn-lg">${msg}</a>
-              <span class="cd-timeline__date">${asiento.getFechaString()}</span>
-          </div>
-          <!-- cd-timeline__content -->
-      </div>
-      `;
-    }
-    resultHtml += ` </div></section>`;
-  }else{
-    resultHtml = `<h5 class="mb-0 text-center">No hay asientos registrados</h5>`;
+
+function obtenerProductos(){
+  return store.getObject().getProductos();
+}
+
+function obtenerHistorial(){
+  let historial = store.getObject().getHistorial().exportarDatos();
+  return historial;
+}
+
+function optionsProductos(productos){
+  let html = `<option value="" selected>Seleccionar Producto</option>`;
+  for(let producto of productos){
+    html += `<option value="${producto.getCodigo()}">${producto.getNombre()}</option>`;
   }
+  return html;
+}
+
+function mostrarInventario(codigo){
+  if(codigo != ""){
+    let inventario = new Inventario(codigo, obtenerHistorial(), Inventario.PROMEDIO);
+    let headers = ['PRINCIPAL','ENTRADAS','SALIDAS','SALDOS'];
+    
+    let datos = inventario.getDatos();
+    datos.unshift(['TIPO','FECHA','DETALLE','CANTIDAD','UNITARIO','TOTAL','CANTIDAD','UNITARIO','TOTAL','CANTIDAD','PROMEDIO','TOTAL']);
+    let tablaHtml = crearTablaInventario(headers, datos);
+    htmlRender('divInventario', tablaHtml);
+    htmlUnsetClass('d-none', 'cardInventario');
+  }else{
+    htmlSetClass('d-none', 'cardInventario');
+  }
+}
+
+function crearTablaInventario(headers, data){
+  let headerProperties = new HeaderProperties();
+  headerProperties.addPropCols('colspan', 3);
+  let tableHeader = new Header(headers, headerProperties);
   
-  document.getElementById("timelineContainer").innerHTML = resultHtml;
+  let tableBody = new Body(data, new BodyProperties());
+  
+  let tableFooter = new Footer([], new FooterProperties());
+  
+  let propsTable = new TableProperties();
+  propsTable.addPropMain("class","table");
+  propsTable.addPropMain("style","text-align:center;");
+  let table = new Table("Inventario", tableHeader, tableBody, tableFooter, propsTable);
+  
+  let html = `<div class="table-responsive">`;
+  html += table.getHtml();
+  html += `</div>`;
+  
+  return html;
 }
 
 jQuery(document).ready(function($) {
     'use strict';
+    reloadStore();
+    htmlEventListener('selectProductos', 'change', function(){
+      mostrarInventario(this.value);
+    });
     
-    refreshStore();
-    mostrarTimeline();
+    htmlRender('selectProductos', optionsProductos(obtenerProductos()));
 });

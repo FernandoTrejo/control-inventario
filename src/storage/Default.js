@@ -1,4 +1,5 @@
 import {Historial} from '../classes/Historial.js';
+import {Entidad} from '../classes/Entidad.js';
 import {Transaccion} from '../classes/Transaccion.js';
 
 class Default{
@@ -53,6 +54,19 @@ class Default{
     let busqueda = entidadesTipo.filter(entidad => entidad.getCodigo() == codigo);
     return (busqueda.length > 0) ? busqueda[0] : null;
   }
+  
+  eliminarEntidad(codigo, tipo){
+    let entidadBusqueda = this.buscarEntidad(codigo, tipo);
+    if(entidadBusqueda != null){
+      let entidad = (entidadBusqueda.getTipo() == Entidad.CLIENTE) ? 'CLIENTE' : 'PROVEEDOR';
+      let entidadesRestantes = this.entidades.filter(entidad => entidad.getCodigo() != codigo);
+      store.getObject().setEntidades(entidadesRestantes);
+      
+      //eliminar transacciones del historial
+      
+      this.eliminarTransacciones(codigo, entidad);
+    }
+  }
   /*FIN FUNCIONES ENTIDADES*/
   
   /*FUNCIONES PRODUCTOS*/
@@ -64,6 +78,17 @@ class Default{
   buscarProducto(codigo){
     let busqueda = this.productos.filter(producto => producto.getCodigo() == codigo);
     return (busqueda.length > 0) ? busqueda[0] : null;
+  }
+  
+  eliminarProducto(codigo){
+    if(this.buscarProducto(codigo) != null){
+      let productosRestantes = this.productos.filter(producto => producto.getCodigo() != codigo);
+      this.setProductos(productosRestantes);
+      
+      //eliminar transacciones del historial
+      
+      this.eliminarTransacciones(codigo, 'PRODUCTO');
+    }
   }
   /*FIN FUNCIONES PRODUCTOS*/
   
@@ -79,6 +104,41 @@ class Default{
       
       return [];
     }
+  }
+  
+  eliminarTransacciones(codigo, unidad){
+    let iniciales = this.historial.iniciales;
+    let compras = this.historial.compras;
+    let ventas = this.historial.ventas;
+    let devolucionesVentas = this.historial.devolucionesVentas;
+    let devolucionesCompras = this.historial.devolucionesCompras;
+    
+    switch (unidad) {
+      case 'PRODUCTO':
+        iniciales = this.historial.iniciales.filter(transaccion => transaccion.getCodigoProducto() != codigo);
+        compras = this.historial.compras.filter(transaccion => transaccion.getCodigoProducto() != codigo);
+        ventas = this.historial.ventas.filter(transaccion => transaccion.getCodigoProducto() != codigo);
+        devolucionesCompras = this.historial.devolucionesCompras.filter(transaccion => transaccion.getCodigoProducto() != codigo);
+        devolucionesVentas = this.historial.devolucionesVentas.filter(transaccion => transaccion.getCodigoProducto() != codigo);
+        break;
+      
+      case 'CLIENTE':
+        ventas = this.historial.ventas.filter(transaccion => transaccion.getEntidad() != codigo);
+        devolucionesVentas = this.historial.devolucionesVentas.filter(transaccion => transaccion.getEntidad() != codigo);
+        break;
+        
+      case 'PROVEEDOR':
+        iniciales = this.historial.iniciales.filter(transaccion => transaccion.getEntidad() != codigo);
+        compras = this.historial.compras.filter(transaccion => transaccion.getEntidad() != codigo);
+        devolucionesCompras = this.historial.devolucionesCompras.filter(transaccion => transaccion.getEntidad() != codigo);
+        break;
+    }
+    
+    this.historial.setIniciales(iniciales);
+    this.historial.setCompras(compras);
+    this.historial.setVentas(ventas);
+    this.historial.setDevolucionesVentas(devolucionesVentas);
+    this.historial.setDevolucionesCompras(devolucionesCompras);
   }
 }
 

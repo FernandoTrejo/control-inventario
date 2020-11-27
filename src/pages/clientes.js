@@ -37,13 +37,6 @@ function guardarEntidad(entidad){
   }
 }
 
-function eliminarEntidad(codigo){
-  let entidades = obtenerEntidades();
-  let entidadesRestantes = entidades.filter(entidad => entidad.getCodigo() != codigo);
-  store.getObject().setEntidades(entidadesRestantes);
-  store.save();
-}
-
 /*FIN FUNCIONES PRINCIPALES*/
 
 /*FUNCIONES CONSTANTES DE LA PAGINA*/
@@ -67,7 +60,8 @@ function mostrarListaClientes(){
   document.querySelectorAll('.delete-asi').forEach(item => {
     item.addEventListener('click', event => {
       let res = item.id.split("-");
-      eliminarEntidad(res[2]);
+      store.getObject().eliminarEntidad(res[2], Entidad.CLIENTE);
+      store.save();
       mostrarListaClientes();
     })
   });

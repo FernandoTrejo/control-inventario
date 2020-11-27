@@ -17,6 +17,25 @@ class Transaccion{
     return this.tipoTransaccion;
   }
   
+  getTipoTransaccionString(){
+    switch (this.tipoTransaccion) {
+      case Transaccion.INVENTARIO_INICIAL:
+        return "INVENTARIO INICIAL"
+      
+      case Transaccion.COMPRA:
+        return "COMPRA";
+        
+      case Transaccion.VENTA:
+        return "VENTA";
+        
+      case Transaccion.DEVOLUCION_COMPRA:
+        return "DEVOLUCION SOBRE COMPRA";
+        
+      case Transaccion.DEVOLUCION_VENTA:
+        return "DEVOLUCION SOBRE VENTA";
+    }
+  }
+  
   getFecha(){
     return this.fechaDate;
   }

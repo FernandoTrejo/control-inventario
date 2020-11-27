@@ -11,6 +11,9 @@ let store = null;
 
 function reloadStore(){
   store = Storage.getInstance('INV-' + session.getObject().empresa);
+  /*store.getObject().getHistorial().setCompras([]);
+  store.save()
+  console.log(store)*/
 }
 
 function obtenerProveedores(){

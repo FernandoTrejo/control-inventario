@@ -5,7 +5,7 @@
   import {Money} from './src/classes/Money.js';
   
   let historial = new Historial();
-  let t1 = new Transaccion('01/01/2019', new Date('01/01/2019'), 'Inventario inicial', 150, new Money(10), '0101');
+  /*let t1 = new Transaccion('01/01/2019', new Date('01/01/2019'), 'Inventario inicial', 150, new Money(10), '0101');
   let t2 = new Transaccion('02/01/2019', new Date('02/01/2019'), 'Segunda compra', 150, new Money(10.10), '0101');
   let t3 = new Transaccion('03/01/2019', new Date('03/01/2019'), 'Tercera compra', 350, new Money(9.98), '0101');
   
@@ -43,11 +43,11 @@
   historial.agregarCompra(t13);
   
   let t14 = new Transaccion('09/01/2019', new Date('09/01/2019'), 'Devolucion sobre compra', 200, new Money(10.20), '0101');
-  historial.agregarDevolucionCompra(t14);
+  historial.agregarDevolucionCompra(t14);*/
   
   
   //prueba
-  let n1 = new Transaccion('03/01/2019', new Date('03/01/2019'), 'Inicial new product', 300, new Money(5), '0303');
+  /*let n1 = new Transaccion('03/01/2019', new Date('03/01/2019'), 'Inicial new product', 300, new Money(5), '0303');
   let n2 = new Transaccion('04/01/2019', new Date('04/01/2019'), 'Compra new product', 100, new Money(5.5), '0303');
   let n3 = new Transaccion('05/01/2019', new Date('05/01/2019'), 'Venta new product', 175, new Money(0), '0303');
     
@@ -61,6 +61,14 @@
   let inventario03 = new Inventario('0303', datosHistorial, Inventario.PROMEDIO);
   
   console.log(inventario01);
-  console.log(inventario03);
+  console.log(inventario03);*/
   
+  let t1 = new Transaccion('01/01/2019', new Date('01/01/19'), 'i',500, new Money(15), '0101');
+  let t2 = new Transaccion('01/01/2019', new Date('01/01/19'), 'c',500, new Money(10), '0101');
+  historial.agregarInicial(t1);
+  historial.agregarCompra(t2);
+  let datosHistorial = historial.exportarDatos();
+  
+  let inventario01 = new Inventario('0101', datosHistorial, Inventario.PROMEDIO);
+  console.log(inventario01)
 </script>

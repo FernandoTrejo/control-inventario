@@ -14,9 +14,9 @@
     <!-- styles -->
     <link rel="stylesheet" href="assets/css/styles.css" />
     
-    <!--<script type="module" src="src/pages/session.js"></script>-->
+    <script type="module" src="src/pages/session.js"></script>
     
-    <title>Control Inventario</title>
+    <title>Inventario</title>
 </head>
 
 <body>
@@ -47,8 +47,8 @@
                           <div class="page-breadcrumb">
                               <nav aria-label="breadcrumb">
                                   <ol class="breadcrumb">
-                                      <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Menú</a></li>
-                                      <li class="breadcrumb-item active" aria-current="page">Inventario</li>
+                                      <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">MENÚ</a></li>
+                                      <li class="breadcrumb-item active" aria-current="page">INVENTARIO</li>
                                   </ol>
                               </nav>
                           </div>
@@ -56,16 +56,40 @@
                   </div>
               </div>
               
-              <!-- listado de asientos-->
-            
-              <div id="divInventario"></div>
+              <div class="separator"></div>
               
+              
+              <div class="row d-flex justify-content-center">
+                <div class="col-md-12 col-lg-10 col-xl-8">
+                  <div id="divSelectProductos">
+                    <select class="form-control" id="selectProductos">
+                        
+                    </select>
+                  </div>
+                  <div class="separator"></div>
+                  <div class="accrodion-regular" id="accordion-start">
+                    <div class="card d-none" id="cardInventario">
+                      <div class="card-header"></div>
+                      <div class="card-body">
+                        <div id="divInventario">
+              
+                        </div>
+                      </div>
+                      <div class="card-footer"></div>
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+        
           </div>
         </div>
     </div>
-    
-    <script src="src/pages/global.js"></script>
 
+    <script src="src/pages/global.js"></script>
+    <script src="src/JSHELEMENTS/functions.js"></script>
+    <script src="src/JSHELEMENTS/validations.js"></script>
+    
     <!-- Optional JavaScript -->
     <!-- jquery 3.3.1 -->
     <script src="assets/vendor/jquery/jquery-3.3.1.min.js"></script>
@@ -79,9 +103,8 @@
     <!-- datepicker -->
     <script src="assets/vendor/datepicker/moment.js"></script>
     <script src="assets/vendor/datepicker/tempusdominus-bootstrap-4.js"></script>
-    <script src="assets/vendor/datepicker/datepicker.js"></script>
     
-    <!--<script type="module" src="src/pages/libros/diario/main.js"></script>-->
+    <script type="module" src="src/pages/index.js"></script>
     
 </body>
  

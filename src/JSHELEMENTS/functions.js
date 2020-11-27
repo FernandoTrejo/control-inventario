@@ -38,6 +38,14 @@ function htmlRender(id, html){
   document.getElementById(id).innerHTML = html;
 }
 
+function htmlSetClass(className, id){
+  document.getElementById(id).classList.add(className);
+}
+
+function htmlUnsetClass(className, id){
+  document.getElementById(id).classList.remove(className);
+}
+
 function collectInputs(inputsIds){
   let inputs = inputsIds.map(id => htmlValue(id).trim());
   return inputs;
