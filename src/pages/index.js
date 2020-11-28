@@ -35,11 +35,25 @@ function optionsProductos(productos){
 function mostrarInventario(codigo){
   if(codigo != ""){
     let inventario = new Inventario(codigo, obtenerHistorial(), Inventario.PROMEDIO);
+    console.log(inventario)
     let headers = ['PRINCIPAL','ENTRADAS','SALIDAS','SALDOS'];
     
     let datos = inventario.getDatos();
     datos.unshift(['TIPO','FECHA','DETALLE','CANTIDAD','UNITARIO','TOTAL','CANTIDAD','UNITARIO','TOTAL','CANTIDAD','PROMEDIO','TOTAL']);
-    let tablaHtml = crearTablaInventario(headers, datos);
+    console.log(inventario.getCostoSalidas());
+    let footerDatos = ['','', '',
+          inventario.getEntradas(),
+          '',
+          inventario.getCostoEntradas().toString(),
+          inventario.getSalidas(),
+          '',
+          inventario.getCostoSalidas().toString(),
+          inventario.getExistencias(),
+          inventario.getPrecioPromedio().toString(),
+          inventario.getCostoExistencias().toString()
+        ];
+          
+    let tablaHtml = crearTablaInventario(headers, datos, footerDatos);
     htmlRender('divInventario', tablaHtml);
     htmlUnsetClass('d-none', 'cardInventario');
   }else{
@@ -47,14 +61,14 @@ function mostrarInventario(codigo){
   }
 }
 
-function crearTablaInventario(headers, data){
+function crearTablaInventario(headers, data, footerData){
   let headerProperties = new HeaderProperties();
   headerProperties.addPropCols('colspan', 3);
   let tableHeader = new Header(headers, headerProperties);
   
   let tableBody = new Body(data, new BodyProperties());
   
-  let tableFooter = new Footer([], new FooterProperties());
+  let tableFooter = new Footer(footerData, new FooterProperties());
   
   let propsTable = new TableProperties();
   propsTable.addPropMain("class","table");

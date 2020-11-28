@@ -41,7 +41,7 @@ class PROMEDIO{
       let precioPromedio = new Money(0);
       
       //para filtrar los tipos de transacciones 
-      let tiposEvaluar = [Transaccion.COMPRA,Transaccion.DEVOLUCION_COMPRA,Transaccion.INVENTARIO_INICIAL];
+      let tiposEvaluar = [Transaccion.COMPRA,Transaccion.INVENTARIO_INICIAL];
     
       for(let transaccion of this.transacciones){
         let montoUnitario = transaccion.getMontoUnitario();
@@ -68,31 +68,39 @@ class PROMEDIO{
         let montoTotal01 = "";
         let montoTotal02 = "";
         
-        if(tiposEvaluar.includes(transaccion.getTipoTransaccion())){
-          if(transaccion.getTipoTransaccion() == Transaccion.DEVOLUCION_COMPRA){
-            cantidad01 = cantidadUnidadesRegistro * (-1);
-            let m3 = new Money(Number(montoUnitario.quantity) * (-1));
-            montoUnitario01 = m3;
-            let m4 = new Money(Number(tempTotalRegistro.quantity) * (-1));
-            montoTotal01 = m4;
-          }else{
+        switch(transaccion.getTipoTransaccion()){
+          case Transaccion.INVENTARIO_INICIAL:
             cantidad01 = cantidadUnidadesRegistro;
             montoUnitario01 = montoUnitario;
             montoTotal01 = tempTotalRegistro;
-          }
-        }else{
-          if(transaccion.getTipoTransaccion() == Transaccion.DEVOLUCION_VENTA){
-            cantidad02 = cantidadUnidadesRegistro;
-            montoUnitario02 = montoUnitario;
-            montoTotal02 = tempTotalRegistro();
-          }else{
+            break;
+            
+          case Transaccion.COMPRA:
+            cantidad01 = cantidadUnidadesRegistro;
+            montoUnitario01 = montoUnitario;
+            montoTotal01 = tempTotalRegistro;
+            break;
+            
+          case Transaccion.VENTA:
             cantidad02 = cantidadUnidadesRegistro * (-1);
-            let m = new Money(Math.abs(montoUnitario.quantity));
-            montoUnitario02 = m;
-            let m2 = new Money(Math.abs(tempTotalRegistro.quantity))
-            montoTotal02 = m2;
-          }
+            montoUnitario02 = new Money(Math.abs(montoUnitario.quantity));
+            montoTotal02 = new Money(Math.abs(tempTotalRegistro.quantity));
+            break;
+            
+          case Transaccion.DEVOLUCION_COMPRA:
+            cantidad01 = cantidadUnidadesRegistro;
+            montoUnitario01 = montoUnitario;
+            montoTotal01 = tempTotalRegistro;
+            break;
+            
+          case Transaccion.DEVOLUCION_VENTA:
+            cantidad02 = cantidadUnidadesRegistro * (-1);
+            montoUnitario02 = new Money(Math.abs(montoUnitario.quantity));
+            montoTotal02 = new Money(tempTotalRegistro.quantity * (-1));
+            break;
         }
+      
+        
         this.precioPromedio = precioPromedio;
         
         let registro = [
@@ -132,7 +140,7 @@ class PROMEDIO{
   }
   
   obtenerDatos(){
-    let result = {
+    /*let result = {
       'datos': this.datos02,
       'inicial': 0,
       'costoInicial': new Money(0),
@@ -142,6 +150,21 @@ class PROMEDIO{
       'costoEntradas': new Money(0),
       'costoSalidas': new Money(0),
       'costoExistencias': new Money(0),
+      'precioPromedio': new Money(0)
+    };*/
+    
+    let result = {
+      'datos': this.datos02,
+      'inicial': 0,
+      'costoInicial': new Money(0),
+      'compras': 0,
+      'costoCompras': 0,
+      'ventas': 0,
+      'costoVentas': new Money(0),
+      'devolucionesVentas': new Money(0),
+      'costoDevolucionesVentas': new Money(0),
+      'devolucionesCompras': new Money(0),
+      'costoDevolucionesCompras': new Money(0),
       'precioPromedio': new Money(0)
     };
     
@@ -168,16 +191,23 @@ class PROMEDIO{
       let cantidadDevolucionCompras = devolucionesCompras.reduce((total, currentValue) => Number(total) + Number(currentValue[3]), 0);
       let costoDevolucionCompras = devolucionesCompras.reduce((total, currentValue) => Money.calculateMoneySum([total, currentValue[5]]), new Money(0));
       
-      result.inicial = cantidadInicial;
-      result.costoInicial = costoInicial;
-      
-      result.entradas = Number(cantidadInicial) + Number(cantidadCompras) - Number(cantidadDevolucionCompras);
-      result.salidas = Number(cantidadVentas) - Number(cantidadDevolucionVentas);
+      result.inicial = Math.abs(cantidadInicial);
+      result.costoInicial = new Money(Math.abs(costoInicial.quantity));
+      result.compras = Math.abs(cantidadCompras);
+      result.costoCompras = new Money(Math.abs(costoCompras.quantity));
+      result.ventas = Math.abs(cantidadVentas);
+      result.costoVentas = new Money(Math.abs(costoVentas.quantity));
+      result.devolucionesVentas = Math.abs(cantidadDevolucionVentas);
+      result.costoDevolucionVentas = new Money(Math.abs(costoDevolucionVentas.quantity));
+      result.devolucionesCompras = Math.abs(cantidadDevolucionCompras);
+      result.costoDevolucionCompras = new Money(Math.abs(costoDevolucionCompras.quantity));
+      /*result.entradas = Number(cantidadInicial) + Number(cantidadCompras) + Number(cantidadDevolucionCompras);
+      result.salidas = Number(cantidadVentas) + Number(cantidadDevolucionVentas);
       result.existencias = Number(result.entradas) - Number(result.salidas);
       
       result.costoEntradas = Money.calculateMoneySus(Money.calculateMoneySum([costoInicial, costoCompras]), costoDevolucionCompras);
       result.costoSalidas = Money.calculateMoneySus(costoVentas,costoDevolucionVentas);
-      result.costoExistencias = Money.calculateMoneySus(result.costoEntradas, result.costoSalidas);
+      result.costoExistencias = Money.calculateMoneySus(result.costoEntradas, result.costoSalidas);*/
       
       result.precioPromedio = this.precioPromedio;
     }

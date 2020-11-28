@@ -13,15 +13,12 @@ let store = null;
 
 function reloadStore(){
   store = Storage.getInstance('INV-' + session.getObject().empresa);
-  /*store.getObject().getHistorial().setVentas([]);
-  store.save()
-  console.log(store)*/
 }
 
 function obtenerEntidades(){
   let entidades = store.getObject().getEntidades();
-  let clientes = entidades.filter(entidad => entidad.getTipo() == Entidad.CLIENTE);
-  return clientes;
+  let proveedores = entidades.filter(entidad => entidad.getTipo() == Entidad.PROVEEDOR);
+  return proveedores;
 }
 
 function obtenerProductos(){
@@ -29,7 +26,7 @@ function obtenerProductos(){
 }
 
 function obtenerTransacciones(){
-  let transacciones = store.getObject().getHistorial().consultarVentas();
+  let transacciones = store.getObject().getHistorial().consultarDevolucionesCompras();
   return transacciones;
 }
 
@@ -37,16 +34,16 @@ function guardarTransaccion(transaccion){
   console.log(transaccion)
   if(htmlValue('inputEditar') == "EDICION"){
     let indice = Number(htmlValue('inputIdTransaccion'));
-    store.getObject().getHistorial().editarTransaccion(indice, transaccion, Transaccion.VENTA);
+    store.getObject().getHistorial().editarTransaccion(indice, transaccion, Transaccion.DEVOLUCION_COMPRA);
   }else{
-    store.getObject().getHistorial().agregarVenta(transaccion);
+    store.getObject().getHistorial().agregarDevolucionCompra(transaccion);
   }
   store.save();
 }
 
 function eliminarTransaccion(indice){ 
   //eliminar transaccion
-  store.getObject().getHistorial().eliminarTransaccion(indice, Transaccion.VENTA);
+  store.getObject().getHistorial().eliminarTransaccion(indice, Transaccion.DEVOLUCION_COMPRA);
   store.save();
   console.log(store)
 }
@@ -61,7 +58,7 @@ function obtenerInventario(codigo){
 /*FUNCIONES CONSTANTES DE LA PAGINA*/
 
 function obtenerInputsIdsTransaccion(){ 
-  return ['dateFechaTransaccion','txtDetalle','numCantidad','numPrecio','selectProductos','selectClientes'];
+  return ['dateFechaTransaccion','txtDetalle','numCantidad','numPrecio','selectProductos','selectProveedores'];
 }
 /*FIN FUNCIONES CONSTANTES DE LA PAGINA*/
 
@@ -90,7 +87,7 @@ function mostrarListaTransacciones(){
   document.querySelectorAll('.modify-asi').forEach(item => {
     item.addEventListener('click', event => {
       let res = item.id.split("-");
-      let transaccion = store.getObject().getHistorial().buscarTransaccion(res[2], Transaccion.VENTA);
+      let transaccion = store.getObject().getHistorial().buscarTransaccion(res[2], Transaccion.DEVOLUCION_COMPRA);
       if(transaccion != null){
         mostrarDatosTransaccion(transaccion, res[2]);
       }
@@ -100,7 +97,7 @@ function mostrarListaTransacciones(){
 
 function crearCardTransaccion(transaccion, i){
   let producto = store.getObject().buscarProducto(transaccion.getCodigoProducto());
-  let entidad = store.getObject().buscarEntidad(transaccion.getEntidad(), Entidad.CLIENTE);
+  let entidad = store.getObject().buscarEntidad(transaccion.getEntidad(), Entidad.PROVEEDOR);
   
   let html = `<div class="card">
           <div class="card-header d-flex" style="background: #47519c">
@@ -127,10 +124,10 @@ function crearCardTransaccion(transaccion, i){
   return html;
 }
 
-function optionsClientes(clientes){
-  let html = `<option value="" selected>Seleccionar Cliente</option>`;
-  for(let cliente of clientes){
-    html += `<option value="${cliente.getCodigo()}">${cliente.getNombre()}</option>`;
+function optionsProveedores(entidades){
+  let html = `<option value="" selected>Seleccionar Proveedor</option>`;
+  for(let entidad of entidades){
+    html += `<option value="${entidad.getCodigo()}">${entidad.getNombre()}</option>`;
   }
   return html;
 }
@@ -230,7 +227,7 @@ jQuery(document).ready(function($) {
     htmlEventListener('dateFechaTransaccion', 'input', habilitarBotonGuardar); // arreglar
     htmlEventListener('numCantidad', 'keyup', habilitarBotonGuardar);
     htmlEventListener('numPrecio', 'keyup', habilitarBotonGuardar);
-    htmlEventListener('selectClientes', 'change', habilitarBotonGuardar);
+    htmlEventListener('selectProveedores', 'change', habilitarBotonGuardar);
     htmlEventListener('selectProductos', 'change', function(){
       habilitarBotonGuardar();
       if(nonEmptyFields([htmlValue('selectProductos')])){
@@ -256,6 +253,6 @@ jQuery(document).ready(function($) {
     //agregar los campos obligatorios
     mostrarListaTransacciones();
     console.log(store)
-    htmlRender('selectClientes', optionsClientes(obtenerEntidades()));
+    htmlRender('selectProveedores', optionsProveedores(obtenerEntidades()));
     htmlRender('selectProductos', optionsProductos(obtenerProductos()));
 });

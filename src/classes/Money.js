@@ -65,6 +65,7 @@ class Money{
   }
   
   static calculateMoneySus(value1, value2){
+    console.log(value1, value2)
     let result = Number(value1.amount) - Number(value2.amount);
     return new Money(result);
   }

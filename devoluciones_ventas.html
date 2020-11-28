@@ -14,9 +14,9 @@
     <!-- styles -->
     <link rel="stylesheet" href="assets/css/styles.css" />
     
-    <!--<script type="module" src="src/pages/session.js"></script>-->
+    <script type="module" src="src/pages/session.js"></script>
     
-    <title>Devoluciones sobre ventas</title>
+    <title>Devoluciones sobre Ventas</title>
 </head>
 
 <body>
@@ -47,8 +47,8 @@
                           <div class="page-breadcrumb">
                               <nav aria-label="breadcrumb">
                                   <ol class="breadcrumb">
-                                      <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Entradas</a></li>
-                                      <li class="breadcrumb-item active" aria-current="page">Devoluciones sobre Ventas</li>
+                                      <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">ENTRADAS</a></li>
+                                      <li class="breadcrumb-item active" aria-current="page">DEVOLUCIONES SOBRE VENTAS</li>
                                   </ol>
                               </nav>
                           </div>
@@ -56,16 +56,114 @@
                   </div>
               </div>
               
-              <!-- listado de asientos-->
-            
-              <div id="divDevoluciones"></div>
+              <!-- listado de COMPRAS-->
+              <div class="row d-flex justify-content-center">
+                <button type="button" id="btnAbrirModal" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter"><i class=""></i> CREAR NUEVA</button>
+              </div>
+              
+              <div class="separator"></div>
+              
+              
+              <div class="row d-flex justify-content-center">
+                <div class="col-md-12 col-lg-10 col-xl-8">
+
+                  <div class="accrodion-regular" id="accordion-start">
+                    <div id="divTransacciones">
+              
+                    </div>
+                  </div>
+                </div>
+              </div>
               
           </div>
         </div>
     </div>
-    
-    <script src="src/pages/global.js"></script>
+        <!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">DEVOLUCIÓN</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div> 
+      <div class="modal-body">
+          <form action="">
+            <div class="card">
+              <div class="card-body">
+                <div class="form-group">
+                  <h5>Producto (obligatorio)</h5>
+                  <div class="input-group date" id="" data-target-input="nearest">
+                      <select class="form-control" id="selectProductos">
+                        
+                      </select>
+                  </div>
+                </div>
+                  <div class="form-group">
+                    <h5>Fecha Devolución (obligatorio)</h5>
+                    <div class="input-group date" id="datepicker" data-target-input="nearest">
+                        <input type="text" id="dateFechaTransaccion" class="form-control datetimepicker-input" placeholder="Seleccionar fecha" data-target="#datepicker" />
+                        <div class="input-group-append" data-target="#datepicker" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                        </div>
+                    </div>
+                </div> 
+                <div class="form-group">
+                  <h5 class="mb-0">Detalle (obligatorio)</h5>
+                    <textarea class="form-control" id="txtDetalle" rows="2"></textarea>
+                    <small id="txtDetalleError" class="form-text text-danger">
+                    </small>
+                </div>
+                <div class="form-group d-none">
+                  <h5 class="mb-0">Precio (sólo lectura)</h5>
+                    <div class="input-group" data-target-input="nearest">
+                        <input type="number" id="numPrecio" step="0.01" min="0" class="form-control" value="0.00" readonly/>
+                        <div class="input-group-append" data-target="" data-toggle="">
+                            <div class="input-group-text"><i class="fas fa-dollar-sign"></i></div>
+                        </div>
+                    </div>
+                    <small id="" class="form-text text-danger">
+                    </small>
+                </div>
+                <div class="form-group">
+                  <h5 class="mb-0">Cantidad (obligatorio)</h5>
+                    <div class="input-group" id="" data-target-input="nearest">
+                        <input type="number" class="form-control" id="numCantidad" placeholder="Existencias: 0"/>
+                        <input type="hidden" id="inputEditar" value="CREACION" />
+                        <input type="hidden" id="inputIdTransaccion" value="-1" />
+                    </div>
+                    <small id="numCantidadError" class="form-text text-danger">
+                    </small>
+                </div>
 
+                <div class="form-group">
+                  <h5>Cliente (obligatorio)</h5>
+                  <div class="input-group date" id="" data-target-input="nearest">
+                      <select class="form-control" id="selectClientes">
+                        
+                      </select>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+          
+            <h5 id="msgFallido" class="mb-0 text-danger d-none"></h5>
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" type="button" data-dismiss="modal" id="btnAgregarNuevo" disabled>GUARDAR</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">CANCELAR</button>
+      </div>
+    </div>
+  </div>
+</div> 
+
+    <script src="src/pages/global.js"></script>
+    <script src="src/JSHELEMENTS/functions.js"></script>
+    <script src="src/JSHELEMENTS/validations.js"></script>
+    
     <!-- Optional JavaScript -->
     <!-- jquery 3.3.1 -->
     <script src="assets/vendor/jquery/jquery-3.3.1.min.js"></script>
@@ -79,9 +177,8 @@
     <!-- datepicker -->
     <script src="assets/vendor/datepicker/moment.js"></script>
     <script src="assets/vendor/datepicker/tempusdominus-bootstrap-4.js"></script>
-    <script src="assets/vendor/datepicker/datepicker.js"></script>
     
-    <!--<script type="module" src="src/pages/libros/diario/main.js"></script>-->
+    <script type="module" src="src/pages/devolucion_ventas.js"></script>
     
 </body>
  

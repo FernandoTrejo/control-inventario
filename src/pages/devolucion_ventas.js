@@ -13,9 +13,6 @@ let store = null;
 
 function reloadStore(){
   store = Storage.getInstance('INV-' + session.getObject().empresa);
-  /*store.getObject().getHistorial().setVentas([]);
-  store.save()
-  console.log(store)*/
 }
 
 function obtenerEntidades(){
@@ -29,7 +26,7 @@ function obtenerProductos(){
 }
 
 function obtenerTransacciones(){
-  let transacciones = store.getObject().getHistorial().consultarVentas();
+  let transacciones = store.getObject().getHistorial().consultarDevolucionesVentas();
   return transacciones;
 }
 
@@ -37,16 +34,16 @@ function guardarTransaccion(transaccion){
   console.log(transaccion)
   if(htmlValue('inputEditar') == "EDICION"){
     let indice = Number(htmlValue('inputIdTransaccion'));
-    store.getObject().getHistorial().editarTransaccion(indice, transaccion, Transaccion.VENTA);
+    store.getObject().getHistorial().editarTransaccion(indice, transaccion, Transaccion.DEVOLUCION_VENTA);
   }else{
-    store.getObject().getHistorial().agregarVenta(transaccion);
+    store.getObject().getHistorial().agregarDevolucionVenta(transaccion);
   }
   store.save();
 }
 
 function eliminarTransaccion(indice){ 
   //eliminar transaccion
-  store.getObject().getHistorial().eliminarTransaccion(indice, Transaccion.VENTA);
+  store.getObject().getHistorial().eliminarTransaccion(indice, Transaccion.DEVOLUCION_VENTA);
   store.save();
   console.log(store)
 }
@@ -90,7 +87,7 @@ function mostrarListaTransacciones(){
   document.querySelectorAll('.modify-asi').forEach(item => {
     item.addEventListener('click', event => {
       let res = item.id.split("-");
-      let transaccion = store.getObject().getHistorial().buscarTransaccion(res[2], Transaccion.VENTA);
+      let transaccion = store.getObject().getHistorial().buscarTransaccion(res[2], Transaccion.DEVOLUCION_VENTA);
       if(transaccion != null){
         mostrarDatosTransaccion(transaccion, res[2]);
       }
@@ -239,14 +236,14 @@ jQuery(document).ready(function($) {
         let precioPromedio = inventario.getPrecioPromedio();
         htmlValue('numPrecio', precioPromedio.quantity);
         
-        let existencias = inventario.getExistencias();
+        let salidas = inventario.getSalidas();
         let numCantidad = htmlElement('numCantidad');
-        numCantidad.placeholder = 'Existencias: ' + existencias;
+        numCantidad.placeholder = 'Ventas: ' + salidas;
         console.log(numCantidad)
         
         htmlEventListener('numCantidad','keyup', function(){
           if(Number(htmlValue('numCantidad')) > existencias){
-            htmlText('numCantidadError', 'La cantidad ingresada supera a la cantidad en existencias.');
+            htmlText('numCantidadError', 'La cantidad ingresada supera a la cantidad de ventas.');
           }else{
             htmlText('numCantidadError', '');
           }

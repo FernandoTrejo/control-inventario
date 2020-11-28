@@ -1,4 +1,5 @@
 import {PEPS, PROMEDIO} from './Valuacion.js';
+import {Money} from './Money.js';
 
 class Inventario{
   constructor(codigoProducto, historial, metodoValuacion){
@@ -7,14 +8,23 @@ class Inventario{
     this.metodoValuacion = metodoValuacion;
     
     this.datos = [];
+    
     this.inicial = 0;
-    this.entradas = 0;
+    /*this.entradas = 0;
     this.salidas = 0;
     this.existencias = 0;
     this.costoInicial = null;
     this.costoEntradas = null;
     this.costoSalidas = null;
-    this.costoExistencias = null;
+    this.costoExistencias = null;*/
+    this.compras = 0;
+    this.costoCompras = null;
+    this.ventas = 0;
+    this.costoVentas = null;
+    this.devolucionesVentas = 0;
+    this.costoDevolucionVentas = null;
+    this.devolucionesCompras = 0;
+    this.costoDevolucionCompras = null;
     this.precioPromedio = null;
     
     this.procesarDatos();
@@ -41,32 +51,64 @@ class Inventario{
     return this.inicial;
   }
   
+  getCompras(){
+    return this.compras;
+  }
+  
+  getVentas(){
+    return this.ventas;
+  }
+  
+  getDevolucionesVentas(){
+    return this.devolucionesVentas;
+  }
+  
+  getDevolucionesCompras(){
+    return this.devolucionesCompras;
+  }
+  
   getEntradas(){
-    return this.entradas;
+    return Number(this.inicial) + Number(this.compras) - Number(this.devolucionesCompras);
   }
   
   getSalidas(){
-    return this.salidas;
+    return Number(this.ventas) - Number(this.devolucionesVentas);
   }
   
   getExistencias(){
-    return this.existencias;
+    return Number(this.getEntradas()) - Number(this.getSalidas());
   }
   
   getCostoInicial(){
     return this.costoInicial;
   }
   
+  getCostoCompras(){
+    return this.costoCompras;
+  }
+  
+  getCostoVentas(){
+    return this.costoVentas;
+  }
+  
+  getCostoDevolucionesCompras(){
+    return this.costoDevolucionCompras;
+  }
+  
+  getCostoDevolucionesVentas(){
+    return this.costoDevolucionVentas;
+  }
+  
   getCostoEntradas(){
-    return this.costoEntradas;
+    return Money.calculateMoneySus(Money.calculateMoneySum([this.costoInicial, this.costoCompras]), this.costoDevolucionCompras);
   }
   
   getCostoSalidas(){
-    return this.costoSalidas;
+    return Money.calculateMoneySus(this.costoVentas,this.costoDevolucionVentas);
   }
   
   getCostoExistencias(){
-    return this.costoExistencias;
+    return Money.calculateMoneySus(this.getCostoEntradas(), this.getCostoSalidas());
   }
   
   getPrecioPromedio(){
@@ -92,34 +134,6 @@ class Inventario{
   
   setInicial(costo){
     this.inicial = costo;
-  }
-  
-  setEntradas(costo){
-    this.entradas = costo;
-  }
-  
-  setSalidas(costo){
-    this.salidas = costo;
-  }
-  
-  setExistencias(costo){
-    this.existencias = costo;
-  }
-  
-  setCostoInicial(costo){
-    this.costoInicial = costo;
-  }
-  
-  setCostoEntradas(costo){
-    this.costoEntradas = costo;
-  }
-  
-  setCostoSalidas(costo){
-    this.costoSalidas = costo;
-  }
-  
-  setCostoExistencias(costo){
-    this.costoExistencias = costo;
   }
   
   setPrecioPromedio(precio){
@@ -149,13 +163,15 @@ class Inventario{
     console.log(info)
     this.setDatos(info.datos);
     this.setInicial(info.inicial);
-    this.setCostoInicial(info.costoInicial);
-    this.setEntradas(info.entradas);
-    this.setSalidas(info.salidas);
-    this.setExistencias(info.existencias);
-    this.setCostoEntradas(info.costoEntradas);
-    this.setCostoSalidas(info.costoSalidas);
-    this.setCostoExistencias(info.costoExistencias);
+    this.costoInicial = (info.costoInicial);
+    this.compras = info.compras;
+    this.costoCompras = info.costoCompras;
+    this.ventas = info.ventas;
+    this.costoVentas = info.costoVentas;
+    this.devolucionesVentas = info.devolucionesVentas;
+    this.costoDevolucionVentas = info.costoDevolucionVentas;
+    this.devolucionesCompras = info.devolucionesCompras;
+    this.costoDevolucionCompras = info.costoDevolucionCompras;
     this.setPrecioPromedio(info.precioPromedio);
   }
   
