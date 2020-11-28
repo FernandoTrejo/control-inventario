@@ -13,7 +13,11 @@
     <link rel="stylesheet" href="assets/vendor/datepicker/tempusdominus-bootstrap-4.css" />
     <!-- styles -->
     <link rel="stylesheet" href="assets/css/styles.css" />
-    
+    <style type="text/css" media="all">
+      .selectControl{
+        text-align-last: center;
+      }
+    </style>
     <script type="module" src="src/pages/session.js"></script>
     
     <title>Inventario</title>
@@ -60,9 +64,9 @@
               
               
               <div class="row d-flex justify-content-center">
-                <div class="col-md-12 col-lg-10 col-xl-8">
+                <div class="col-md-12 col-lg-12 col-xl-12">
                   <div id="divSelectProductos">
-                    <select class="form-control" id="selectProductos">
+                    <select class="form-control selectControl" id="selectProductos">
                         
                     </select>
                   </div>
@@ -75,13 +79,46 @@
               
                         </div>
                       </div>
-                      <div class="card-footer"></div>
+                      <div class="card-footer">
+                      </div>
                     </div>
                     
                   </div>
+                  
                 </div>
               </div>
-        
+              <div class="separator"></div>
+              <div class="row d-none justify-content-center" id="divResultados">
+                <div class="col-md-12 col-lg-5 col-xl-3">
+                  <div class="card">
+                    <div class="card-body" id="cardInventarioFinal">
+                      
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12 col-lg-5 col-xl-3">
+                  <div class="card">
+                      <div class="card-body" id="cardExistencias">
+                            
+                      </div>
+                          
+                  </div>
+                </div>
+                <div class="col-md-12 col-lg-5 col-xl-3">
+                  <div class="card">
+                      <div class="card-body" id="cardPrecioPromedio">
+                            
+                      </div>
+                  </div>
+                </div>
+                <div class="col-md-12 col-lg-5 col-xl-3">
+                  <div class="card">
+                      <div class="card-body" id="cardCostoVentas">
+                            
+                      </div>
+                  </div>
+                </div>
+              </div>
           </div>
         </div>
     </div>

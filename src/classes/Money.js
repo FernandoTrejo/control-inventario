@@ -51,7 +51,7 @@ class Money{
     let result = 0;
     for(let val of collection){
       let money = new Money(val);
-      result += Number(money.amount);
+      result += Number(money.completeQuantity);
     }
     return new Money(result);
   }
@@ -59,14 +59,14 @@ class Money{
   static calculateMoneySum(collection){
     let result = 0;
     for(let val of collection){
-      result += Number(val.amount);
+      result += Number(val.completeQuantity);
     }
     return new Money(result);
   }
   
   static calculateMoneySus(value1, value2){
     console.log(value1, value2)
-    let result = Number(value1.amount) - Number(value2.amount);
+    let result = Number(value1.completeQuantity) - Number(value2.completeQuantity);
     return new Money(result);
   }
   
@@ -115,8 +115,8 @@ class Money{
   }
   
   static divideMoney(num, den){
-    if(Number(den.quantity) != 0){
-      let result = Number(num.quantity) / Number(den.quantity);
+    if(Number(den.completeQuantity) != 0){
+      let result = Number(num.completeQuantity) / Number(den.completeQuantity);
       return new Money(result);
     }
   }

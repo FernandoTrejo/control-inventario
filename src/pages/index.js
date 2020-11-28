@@ -35,7 +35,7 @@ function optionsProductos(productos){
 function mostrarInventario(codigo){
   if(codigo != ""){
     let inventario = new Inventario(codigo, obtenerHistorial(), Inventario.PROMEDIO);
-    console.log(inventario)
+    
     let headers = ['PRINCIPAL','ENTRADAS','SALIDAS','SALDOS'];
     
     let datos = inventario.getDatos();
@@ -55,10 +55,26 @@ function mostrarInventario(codigo){
           
     let tablaHtml = crearTablaInventario(headers, datos, footerDatos);
     htmlRender('divInventario', tablaHtml);
+    mostrarDatosFinales(inventario.getCostoExistencias().toString(),inventario.getExistencias(),inventario.getPrecioPromedio().toString(),inventario.getCostoSalidas().toString());
     htmlUnsetClass('d-none', 'cardInventario');
+    htmlUnsetClass('d-none', 'divResultados');
+    htmlSetClass('d-flex', 'divResultados');
   }else{
     htmlSetClass('d-none', 'cardInventario');
+    htmlUnsetClass('d-flex', 'divResultados');
+    htmlSetClass('d-none', 'divResultados');
   }
+}
+
+function mostrarDatosFinales(costoInventarioFinal, existencias, precioPromedio, costoVentas){
+  htmlRender('cardInventarioFinal', simpleTable('Inventario Final', costoInventarioFinal));
+  htmlRender('cardExistencias', simpleTable('Existencias', existencias));
+  htmlRender('cardPrecioPromedio', simpleTable('Costo Promedio', precioPromedio));
+  htmlRender('cardCostoVentas', simpleTable('Costo de Ventas', costoVentas));
+}
+
+function simpleTable(header,value){
+  return `<div class="table-responsive"><table class="table"><tr><th>${header}</th></tr><tr><td>${value}</td></tr></table></div>`;
 }
 
 function crearTablaInventario(headers, data, footerData){

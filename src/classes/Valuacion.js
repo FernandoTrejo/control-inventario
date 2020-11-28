@@ -55,11 +55,11 @@ class PROMEDIO{
         let cantidadUnidadesRegistro = this.operarCantidad(transaccion.getCantidad(), transaccion.getTipoTransaccion());
         cantidadUnidades += Number(cantidadUnidadesRegistro);
         
-        let dineroTotalRegistro = this.operarCantidad(montoTotal.quantity, transaccion.getTipoTransaccion());
+        let dineroTotalRegistro = this.operarCantidad(montoTotal.completeQuantity, transaccion.getTipoTransaccion());
         let tempTotalRegistro = new Money(dineroTotalRegistro);
         
-        dineroTotal = Money.calculateSum([dineroTotal.quantity, tempTotalRegistro.quantity]); 
-        precioPromedio = Money.divide(dineroTotal.quantity, cantidadUnidades);
+        dineroTotal = Money.calculateSum([dineroTotal.completeQuantity, tempTotalRegistro.completeQuantity]); 
+        precioPromedio = Money.divide(dineroTotal.completeQuantity, cantidadUnidades);
         
         let cantidad01 = "";
         let cantidad02 = "";
@@ -83,8 +83,8 @@ class PROMEDIO{
             
           case Transaccion.VENTA:
             cantidad02 = cantidadUnidadesRegistro * (-1);
-            montoUnitario02 = new Money(Math.abs(montoUnitario.quantity));
-            montoTotal02 = new Money(Math.abs(tempTotalRegistro.quantity));
+            montoUnitario02 = new Money(Math.abs(montoUnitario.completeQuantity));
+            montoTotal02 = new Money(Math.abs(tempTotalRegistro.completeQuantity));
             break;
             
           case Transaccion.DEVOLUCION_COMPRA:
@@ -95,8 +95,8 @@ class PROMEDIO{
             
           case Transaccion.DEVOLUCION_VENTA:
             cantidad02 = cantidadUnidadesRegistro * (-1);
-            montoUnitario02 = new Money(Math.abs(montoUnitario.quantity));
-            montoTotal02 = new Money(tempTotalRegistro.quantity * (-1));
+            montoUnitario02 = new Money(Math.abs(montoUnitario.completeQuantity));
+            montoTotal02 = new Money(tempTotalRegistro.completeQuantity * (-1));
             break;
         }
       
@@ -116,7 +116,9 @@ class PROMEDIO{
           cantidadUnidades,
           precioPromedio,
           dineroTotal
-        ]
+        ];
+        
+        console.log(registro)
         
         let registro02 = [
           transaccion.getTipoTransaccionString(),
@@ -192,15 +194,15 @@ class PROMEDIO{
       let costoDevolucionCompras = devolucionesCompras.reduce((total, currentValue) => Money.calculateMoneySum([total, currentValue[5]]), new Money(0));
       
       result.inicial = Math.abs(cantidadInicial);
-      result.costoInicial = new Money(Math.abs(costoInicial.quantity));
+      result.costoInicial = new Money(Math.abs(costoInicial.completeQuantity));
       result.compras = Math.abs(cantidadCompras);
-      result.costoCompras = new Money(Math.abs(costoCompras.quantity));
+      result.costoCompras = new Money(Math.abs(costoCompras.completeQuantity));
       result.ventas = Math.abs(cantidadVentas);
-      result.costoVentas = new Money(Math.abs(costoVentas.quantity));
+      result.costoVentas = new Money(Math.abs(costoVentas.completeQuantity));
       result.devolucionesVentas = Math.abs(cantidadDevolucionVentas);
-      result.costoDevolucionVentas = new Money(Math.abs(costoDevolucionVentas.quantity));
+      result.costoDevolucionVentas = new Money(Math.abs(costoDevolucionVentas.completeQuantity));
       result.devolucionesCompras = Math.abs(cantidadDevolucionCompras);
-      result.costoDevolucionCompras = new Money(Math.abs(costoDevolucionCompras.quantity));
+      result.costoDevolucionCompras = new Money(Math.abs(costoDevolucionCompras.completeQuantity));
       /*result.entradas = Number(cantidadInicial) + Number(cantidadCompras) + Number(cantidadDevolucionCompras);
       result.salidas = Number(cantidadVentas) + Number(cantidadDevolucionVentas);
       result.existencias = Number(result.entradas) - Number(result.salidas);
