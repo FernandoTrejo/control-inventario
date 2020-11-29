@@ -57,14 +57,14 @@
               </div>
               
               <!-- listado de Proveedores-->
-              <div class="row d-flex justify-content-center">
+              <div class="row d-flex justify-content-center" id="divBotonCrear">
                 <button type="button" id="btnAbrirModal" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter"><i class=""></i> CREAR NUEVO</button>
               </div>
               
               <div class="separator"></div>
               
               
-              <div class="row d-flex justify-content-center">
+              <div class="row d-flex justify-content-center" id="divListaClientes">
                 <div class="col-md-12 col-lg-10 col-xl-8">
         
                   <div class="accrodion-regular" id="accordion-start">
@@ -75,7 +75,29 @@
                 </div>
               </div>
               
+              <div class="row d-none justify-content-center" id="divHistorialCliente">
+                <div class="col-md-12 col-lg-10 col-xl-8">
+                  <div class="card">
+                    <div class="card-header">
+                      <h4 class="mb-0" id="nombreCliente"></h4>
+                    </div>
+                    <div class="card-body">
+                      <div class="accrodion-regular" id="accordion-start">
+                        <div id="historialCliente">
+                          
+                    
+                       </div>
+                    </div>
+                    <div class="card-footer d-flex justify-content-center">
+                      <button class="btn btn-info" id="btnRetornar">Retornar</button>
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
 
+              
+            </div>
               
           </div>
         </div>
@@ -95,25 +117,25 @@
             <div class="card">
               <div class="card-body">
                 <div class="form-group">
-                  <h5 class="mb-0">CODIGO</h5>
+                  <h5 class="mb-0">Código</h5>
                     <div class="input-group" id="" data-target-input="nearest">
                         <input type="text" class="form-control" id="txtCodigo" placeholder="Ingresar Codigo"/>
                         <input type="hidden" id="inputEditar" value="CREACION" />
                     </div>
-                    <small id="txtCodigoError" class="form-text text-danger">* Este campo es obligatorio
+                    <small id="txtCodigoError" class="form-text text-danger">
                     </small>
                 </div>
                 <div class="form-group">
-                  <h5 class="mb-0">NOMBRE</h5>
+                  <h5 class="mb-0">Nombre (obligatorio)</h5>
                     <div class="input-group" id="" data-target-input="nearest">
                         <input type="text" class="form-control" id="txtNombre" placeholder="Ingresar Nombre"/>
                     </div>
-                    <small id="txtNombreError" class="form-text text-danger">* Este campo es obligatorio
+                    <small id="txtNombreError" class="form-text text-danger">
                     </small>
                     
                 </div>
                 <div class="form-group">
-                  <h5 class="mb-0">DIRECCION</h5>
+                  <h5 class="mb-0">Dirección</h5>
                     <div class="input-group" id="" data-target-input="nearest">
                         <input type="text" class="form-control" id="txtDireccion" placeholder="Ingresar Direccion"/>
                     </div>
@@ -121,7 +143,7 @@
                     </small>
                 </div>
                 <div class="form-group">
-                  <h5 class="mb-0">TELEFONO</h5>
+                  <h5 class="mb-0">Teléfono</h5>
                     <div class="input-group" id="" data-target-input="nearest">
                         <input type="text" class="form-control" id="txtTelefono" placeholder="Ingresar Telefono"/>
                     </div>
@@ -130,7 +152,7 @@
                     
                 </div>
                 <div class="form-group">
-                  <h5 class="mb-0">EMAIL</h5>
+                  <h5 class="mb-0">Email</h5>
                     <div class="input-group" id="" data-target-input="nearest">
                         <input type="text" class="form-control" id="txtEmail" placeholder="Ingresar Email"/>
                     </div>
@@ -141,7 +163,7 @@
             </div>
             <div class="card">
                 <div class="card-body border-top">
-                    <h5>DESCRIPCION</h5>
+                    <h5>Descripción</h5>
                     <div class="form-group">
                         <textarea class="form-control" id="txtDescripcion" rows="2"></textarea>
                     </div>

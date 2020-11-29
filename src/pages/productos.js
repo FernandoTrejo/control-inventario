@@ -1,6 +1,8 @@
 import {Producto} from '../classes/Producto.js';
 import {Entidad} from '../classes/Entidad.js';
 import {Transaccion} from '../classes/Transaccion.js';
+import {PROMEDIO} from '../classes/Valuacion.js';
+import {Inventario} from '../classes/Inventario.js';
 import {Storage} from '../storage/Storage.js';
 import {Table, TableProperties, Header, HeaderProperties, Body, BodyProperties, Footer, FooterProperties} from '../JSHELEMENTS/HTMLElements/Table.js';
 
@@ -101,9 +103,91 @@ function mostrarListaProductos(){
       }
     })
   });
+  
+  document.querySelectorAll('.check-asi').forEach(item => {
+    item.addEventListener('click', event => {
+      let res = item.id.split("-");
+      let producto = store.getObject().buscarProducto(res[2]);
+      if(producto != null){
+        mostrarTransaccionesProducto(producto);
+      }
+    })
+  });
+  
+  document.querySelectorAll('.cons-asi').forEach(item => {
+    item.addEventListener('click', event => {
+      let res = item.id.split("-");
+      let producto = store.getObject().buscarProducto(res[2]);
+      if(producto != null){
+        mostrarTransaccionesProducto(producto);
+      }
+    })
+  });
+}
+
+function mostrarTransaccionesProducto(producto){
+  let historial = store.getObject().getHistorial().exportarDatos();
+  let inventario = new Inventario(producto.getCodigo(), historial, Inventario.PROMEDIO);
+  let transacciones = inventario.getTransacciones();
+  
+  let data = [];
+  let tiposTransacciones = [Transaccion.VENTA, Transaccion.DEVOLUCION_VENTA];
+  for(let transaccion of transacciones){
+    let tipo = (tiposTransacciones.includes(transaccion.getTipoTransaccion())) ? Entidad.CLIENTE : Entidad.PROVEEDOR;
+    let entidad = store.getObject().buscarEntidad(transaccion.getEntidad(), tipo);
+    console.log(tipo,entidad)
+    if(entidad != null){
+      data.push([transaccion.fechaToString(),transaccion.getTipoTransaccionString(),entidad.getNombre(),transaccion.getCantidad()]);
+    }
+  }
+  
+  let tableHeader = new Header(['Fecha','Tipo','Cliente/Proveedor','Cantidad'], new HeaderProperties());
+  
+  let tableBody = new Body(data, new BodyProperties());
+  
+  let tableFooter = new Footer([], new FooterProperties());
+  
+  let propsTable = new TableProperties();
+  propsTable.addPropMain("class","table")
+  let table = new Table("TransaccionesProducto", tableHeader, tableBody, tableFooter, propsTable);
+  
+  let html = `<div class="table-responsive">`;
+  html += table.getHtml();
+  html += `</div>`;
+  
+  htmlRender('nombreProducto', 'Producto: ' + producto.getNombre());
+  htmlRender('historialProducto', html);
+  
+  htmlUnsetClass('d-none', 'divHistorialProducto');
+  htmlSetClass('d-flex', 'divHistorialProducto');
+  
+  htmlUnsetClass('d-flex', 'divListaProductos');
+  htmlSetClass('d-none', 'divListaProductos');
+  
+  htmlUnsetClass('d-flex', 'divBotonCrear');
+  htmlSetClass('d-none', 'divBotonCrear');
+}
+
+function retornar(){
+  htmlRender('historialProducto', '');
+  
+  htmlUnsetClass('d-flex', 'divHistorialProducto');
+  htmlSetClass('d-none', 'divHistorialProducto');
+  
+  htmlUnsetClass('d-none', 'divListaProductos');
+  htmlSetClass('d-flex', 'divListaProductos');
+  
+  htmlUnsetClass('d-none', 'divBotonCrear');
+  htmlSetClass('d-flex', 'divBotonCrear');
 }
 
 function crearCardProducto(producto){
+  let historial = store.getObject().getHistorial().exportarDatos();
+  let inventario = new Inventario(producto.getCodigo(), historial, Inventario.PROMEDIO);
+  let transacciones = inventario.getTransacciones();
+  let num = transacciones.length;
+  let color = (num > 0) ? 'orange' : 'gray';
+  
   let html = `<div class="card">
           <div class="card-header d-flex" style="background:#049446">
             <div>
@@ -112,6 +196,9 @@ function crearCardProducto(producto){
              </a>
             </div>
             <div class="d-block ml-auto">
+              <button style="margin: 4px 1px; background: ${color};" type="button" class="btn btn-info btn-sm check-asi" id="btn-check-${producto.getCodigo()}">
+                ${num}
+              </button>
               <button style="margin: 4px 1px" type="button" class="btn btn-info btn-sm modify-asi" id="btn-modify-${producto.getCodigo()}" data-toggle="modal" data-target="#exampleModalCenter">
                 <i class="fas fa-edit" aria-hidden="true"></i>
               </button>
@@ -125,7 +212,7 @@ function crearCardProducto(producto){
               ${obtenerDetallesProducto(producto)}
             </div>
             <div class="card-footer d-flex justify-content-center">
-              <button class="btn btn-info">Consultar Historial</button>
+              <button class="btn btn-info cons-asi" id="btn-cons-${producto.getCodigo()}">Consultar Historial</button>
             </div>
           </div>
         </div>`;
@@ -239,6 +326,7 @@ jQuery(document).ready(function($) {
     htmlEventListener('numPrecio', 'keyup', habilitarBotonGuardar);
     htmlEventListener('selectProveedores', 'change', habilitarBotonGuardar);
     //agregar los campos obligatorios
+    htmlEventListener('btnRetornar', 'click', retornar);
     mostrarListaProductos();
    
     htmlRender('selectProveedores', optionsProveedores(obtenerProveedores()));

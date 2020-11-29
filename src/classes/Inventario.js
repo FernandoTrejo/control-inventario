@@ -10,13 +10,6 @@ class Inventario{
     this.datos = [];
     
     this.inicial = 0;
-    /*this.entradas = 0;
-    this.salidas = 0;
-    this.existencias = 0;
-    this.costoInicial = null;
-    this.costoEntradas = null;
-    this.costoSalidas = null;
-    this.costoExistencias = null;*/
     this.compras = 0;
     this.costoCompras = null;
     this.ventas = 0;

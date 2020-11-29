@@ -43,11 +43,11 @@ class Storage{
   
   static buildStorageObject(name,obj){
     console.log(obj)
-    let iniciales = obj.historial.iniciales.map(elemento => new Transaccion(elemento.fechaString, new Date(elemento.fechaString), elemento.detalle, elemento.cantidad, new Money(elemento.montoUnitario.completeQuantity), elemento.codigoProducto, elemento.entidad, elemento.tipoTransaccion));
-    let compras = obj.historial.compras.map(elemento => new Transaccion(elemento.fechaString, new Date(elemento.fechaString), elemento.detalle, elemento.cantidad, new Money(elemento.montoUnitario.completeQuantity), elemento.codigoProducto, elemento.entidad, elemento.tipoTransaccion));
-    let ventas = obj.historial.ventas.map(elemento => new Transaccion(elemento.fechaString, new Date(elemento.fechaString), elemento.detalle, elemento.cantidad, new Money(elemento.montoUnitario.completeQuantity), elemento.codigoProducto, elemento.entidad, elemento.tipoTransaccion));
-    let devolucionesCompras = obj.historial.devolucionesCompras.map(elemento => new Transaccion(elemento.fechaString, new Date(elemento.fechaString), elemento.detalle, elemento.cantidad, new Money(elemento.montoUnitario.completeQuantity), elemento.codigoProducto, elemento.entidad, elemento.tipoTransaccion));
-    let devolucionesVentas = obj.historial.devolucionesVentas.map(elemento => new Transaccion(elemento.fechaString, new Date(elemento.fechaString), elemento.detalle, elemento.cantidad, new Money(elemento.montoUnitario.completeQuantity), elemento.codigoProducto, elemento.entidad, elemento.tipoTransaccion));
+    let iniciales = obj.historial.iniciales.map(elemento => new Transaccion(elemento.fechaString, new Date(elemento.fechaDate), elemento.detalle, elemento.cantidad, new Money(elemento.montoUnitario.completeQuantity), elemento.codigoProducto, elemento.entidad, elemento.tipoTransaccion));
+    let compras = obj.historial.compras.map(elemento => new Transaccion(elemento.fechaString, new Date(elemento.fechaDate), elemento.detalle, elemento.cantidad, new Money(elemento.montoUnitario.completeQuantity), elemento.codigoProducto, elemento.entidad, elemento.tipoTransaccion));
+    let ventas = obj.historial.ventas.map(elemento => new Transaccion(elemento.fechaString, new Date(elemento.fechaDate), elemento.detalle, elemento.cantidad, new Money(elemento.montoUnitario.completeQuantity), elemento.codigoProducto, elemento.entidad, elemento.tipoTransaccion));
+    let devolucionesCompras = obj.historial.devolucionesCompras.map(elemento => new Transaccion(elemento.fechaString, new Date(elemento.fechaDate), elemento.detalle, elemento.cantidad, new Money(elemento.montoUnitario.completeQuantity), elemento.codigoProducto, elemento.entidad, elemento.tipoTransaccion));
+    let devolucionesVentas = obj.historial.devolucionesVentas.map(elemento => new Transaccion(elemento.fechaString, new Date(elemento.fechaDate), elemento.detalle, elemento.cantidad, new Money(elemento.montoUnitario.completeQuantity), elemento.codigoProducto, elemento.entidad, elemento.tipoTransaccion));
     
     let historial = new Historial(iniciales, ventas, compras, devolucionesCompras, devolucionesVentas);
     

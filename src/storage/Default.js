@@ -43,6 +43,16 @@ class Default{
   }
   
   /*FUNCIONES ENTIDADES*/
+  transaccionesEntidad(codigo, tipo){
+    let entidad = this.buscarEntidad(codigo, tipo);
+    let transacciones = [];
+    if(entidad != null){
+      let datos = this.historial.exportarDatos();
+      transacciones = datos.filter(transaccion => transaccion.getEntidad() == codigo);
+    }
+    return transacciones;
+  }
+  
   existeEntidad(codigo, tipo){
     let entidadesTipo = this.entidades.filter(entidad => entidad.getTipo() == tipo);
     let busqueda = this.entidadesTipo.filter(entidad => entidad.getCodigo() == codigo);

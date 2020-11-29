@@ -76,9 +76,81 @@ function mostrarListaProveedores(){
       }
     })
   });
+  
+  document.querySelectorAll('.check-asi').forEach(item => {
+    item.addEventListener('click', event => {
+      let res = item.id.split("-");
+      let entidad = store.getObject().buscarEntidad(res[2], Entidad.PROVEEDOR);
+      if(entidad != null){
+        mostrarTransaccionesProveedor(entidad);
+      }
+    })
+  });
+  
+  document.querySelectorAll('.cons-asi').forEach(item => {
+    item.addEventListener('click', event => {
+      let res = item.id.split("-");
+      let entidad = store.getObject().buscarEntidad(res[2], Entidad.PROVEEDOR);
+      if(entidad != null){
+        mostrarTransaccionesProveedor(entidad);
+      }
+    })
+  });
+}
+
+function mostrarTransaccionesProveedor(entidad){
+  let transacciones = store.getObject().transaccionesEntidad(entidad.getCodigo(), Entidad.PROVEEDOR);
+  let data = [];
+  for(let transaccion of transacciones){
+    let producto = store.getObject().buscarProducto(transaccion.getCodigoProducto());
+    data.push([transaccion.fechaToString(),transaccion.getTipoTransaccionString(),producto.getNombre(),transaccion.getCantidad()]);
+  }
+  
+  let tableHeader = new Header(['Fecha','Tipo','Producto','Cantidad'], new HeaderProperties());
+  
+  let tableBody = new Body(data, new BodyProperties());
+  
+  let tableFooter = new Footer([], new FooterProperties());
+  
+  let propsTable = new TableProperties();
+  propsTable.addPropMain("class","table")
+  let table = new Table("TransaccionesProveedor", tableHeader, tableBody, tableFooter, propsTable);
+  
+  let html = `<div class="table-responsive">`;
+  html += table.getHtml();
+  html += `</div>`;
+  
+  htmlRender('nombreProveedor', 'Proveedor: ' + entidad.getNombre());
+  htmlRender('historialProveedor', html);
+  
+  htmlUnsetClass('d-none', 'divHistorialProveedor');
+  htmlSetClass('d-flex', 'divHistorialProveedor');
+  
+  htmlUnsetClass('d-flex', 'divListaProveedores');
+  htmlSetClass('d-none', 'divListaProveedores');
+  
+  htmlUnsetClass('d-flex', 'divBotonCrear');
+  htmlSetClass('d-none', 'divBotonCrear');
+}
+
+function retornar(){
+  htmlRender('historialProveedor', '');
+  
+  htmlUnsetClass('d-flex', 'divHistorialProveedor');
+  htmlSetClass('d-none', 'divHistorialProveedor');
+  
+  htmlUnsetClass('d-none', 'divListaProveedores');
+  htmlSetClass('d-flex', 'divListaProveedores');
+  
+  htmlUnsetClass('d-none', 'divBotonCrear');
+  htmlSetClass('d-flex', 'divBotonCrear');
 }
 
 function crearCardProveedor(proveedor){
+  let transacciones = store.getObject().transaccionesEntidad(proveedor.getCodigo(), Entidad.PROVEEDOR);
+  let num = transacciones.length;
+  let color = (num > 0) ? 'orange' : 'gray';
+  
   let html = `<div class="card">
           <div class="card-header d-flex">
             <div>
@@ -87,6 +159,9 @@ function crearCardProveedor(proveedor){
              </a>
             </div>
             <div class="d-block ml-auto">
+              <button style="margin: 4px 1px; background: ${color};" type="button" class="btn btn-info btn-sm check-asi" id="btn-check-${proveedor.getCodigo()}">
+                ${num}
+              </button>
               <button style="margin: 4px 1px" type="button" class="btn btn-info btn-sm modify-asi" id="btn-modify-${proveedor.getCodigo()}" data-toggle="modal" data-target="#exampleModalCenter">
                 <i class="fas fa-edit" aria-hidden="true"></i>
               </button>
@@ -100,7 +175,7 @@ function crearCardProveedor(proveedor){
               ${obtenerDetallesProveedor(proveedor)}
             </div>
             <div class="card-footer d-flex justify-content-center">
-              <button class="btn btn-info">Consultar Historial</button>
+              <button class="btn btn-info cons-asi" id="btn-cons-${proveedor.getCodigo()}">Consultar Historial</button>
             </div>
           </div>
         </div>`;
@@ -161,8 +236,8 @@ function limpiarControles(){
   htmlValue('inputEditar', 'CREACION');
   htmlDisable('txtCodigo', false);
   htmlDisable('btnAgregarNuevo', true);
-  htmlText('txtCodigoError', '* Este campo es obligatorio');
-  htmlText('txtNombreError', '* Este campo es obligatorio');
+  htmlText('txtCodigoError', '');
+  htmlText('txtNombreError', '');
 }
 
 /*funciones de controles*/
@@ -174,8 +249,7 @@ function habilitarBotonGuardar(){
   if(htmlValue('inputEditar') == "CREACION"){
     busqueda = store.getObject().buscarEntidad(inputs[0], Entidad.PROVEEDOR);
     let msg01 = "Este código ya está registrado";
-    let msg02 = "* Este campo es obligatorio";
-    htmlText('txtCodigoError', (busqueda != null) ? msg01 : msg02);
+    htmlText('txtCodigoError', (busqueda != null) ? msg01 : '');
   }
   
   let disabled = (response.length > 0) || (busqueda != null);
@@ -190,6 +264,7 @@ jQuery(document).ready(function($) {
     /*para habilitar el boton guardar*/
     htmlEventListener('txtCodigo', 'keyup', habilitarBotonGuardar);
     htmlEventListener('txtNombre', 'keyup', habilitarBotonGuardar);
+    htmlEventListener('btnRetornar', 'click', retornar);
     
     mostrarListaProveedores();
 });
