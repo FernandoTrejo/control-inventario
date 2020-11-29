@@ -59,10 +59,18 @@ function mostrarListaClientes(){
   //eliminar y editar
   document.querySelectorAll('.delete-asi').forEach(item => {
     item.addEventListener('click', event => {
-      let res = item.id.split("-");
-      store.getObject().eliminarEntidad(res[2], Entidad.CLIENTE);
-      store.save();
-      mostrarListaClientes();
+      alertify.confirm("","Las transacciones asociadas a este cliente también serán eliminadas. ¿Desea continuar?",
+      function(){
+        let res = item.id.split("-");
+        store.getObject().eliminarEntidad(res[2], Entidad.CLIENTE);
+        store.save();
+        mostrarListaClientes();
+        alertify.success('Cliente Eliminado');
+      },
+      function(){
+        alertify.error('Operación Cancelada');
+      });
+      
     })
   });
   

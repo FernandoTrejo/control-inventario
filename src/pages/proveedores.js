@@ -59,10 +59,18 @@ function mostrarListaProveedores(){
   //eliminar y editar
   document.querySelectorAll('.delete-asi').forEach(item => {
     item.addEventListener('click', event => {
-      let res = item.id.split("-");
-      store.getObject().eliminarEntidad(res[2], Entidad.PROVEEDOR);
-      store.save();
-      mostrarListaProveedores();
+      alertify.confirm("","Las transacciones asociadas a este proveedor también serán eliminadas. ¿Desea continuar?",
+      function(){
+        let res = item.id.split("-");
+        store.getObject().eliminarEntidad(res[2], Entidad.PROVEEDOR);
+        store.save();
+        mostrarListaProveedores();
+        alertify.success('Proveedor Eliminado');
+      },
+      function(){
+        alertify.error('Operación Cancelada');
+      });
+      
     })
   });
   

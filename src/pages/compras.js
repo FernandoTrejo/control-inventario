@@ -11,9 +11,6 @@ let store = null;
 
 function reloadStore(){
   store = Storage.getInstance('INV-' + session.getObject().empresa);
-  /*store.getObject().getHistorial().setCompras([]);
-  store.save()
-  console.log(store)*/
 }
 
 function obtenerProveedores(){
@@ -30,12 +27,6 @@ function obtenerTransacciones(){
   let transacciones = store.getObject().getHistorial().consultarCompras();
   return transacciones;
 }
-
-/*function obtenerTransaccionInicial(codigo){
-  let transacciones = store.getObject().getHistorial().consultarIniciales();
-  let inicial = transacciones.filter(transaccion => transaccion.getCodigoProducto() == codigo);
-  return inicial[0];
-}*/
 
 function guardarTransaccion(transaccion){ 
   console.log(transaccion)
@@ -81,9 +72,16 @@ function mostrarListaTransacciones(){
   //eliminar y editar
   document.querySelectorAll('.delete-asi').forEach(item => {
     item.addEventListener('click', event => {
-      let res = item.id.split("-");
-      eliminarTransaccion(res[2]);
-      mostrarListaTransacciones();
+      alertify.confirm("","¿Está seguro de que desea eliminar esta transacción?",
+      function(){
+        let res = item.id.split("-");
+        eliminarTransaccion(res[2]);
+        mostrarListaTransacciones();
+        alertify.success('Transacción Eliminada');
+      },
+      function(){
+        alertify.error('Operación Cancelada');
+      });
     })
   });
   

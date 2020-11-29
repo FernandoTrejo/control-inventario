@@ -86,10 +86,17 @@ function mostrarListaProductos(){
   //eliminar y editar
   document.querySelectorAll('.delete-asi').forEach(item => {
     item.addEventListener('click', event => {
-      let res = item.id.split("-");
-      store.getObject().eliminarProducto(res[2]);
-      store.save();
-      mostrarListaProductos();
+      alertify.confirm("","Las transacciones asociadas a este producto también serán eliminadas. ¿Desea continuar?",
+      function(){
+        let res = item.id.split("-");
+        store.getObject().eliminarProducto(res[2]);
+        store.save();
+        mostrarListaProductos();
+        alertify.success('Producto Eliminado');
+      },
+      function(){
+        alertify.error('Operación Cancelada');
+      });
     })
   });
   

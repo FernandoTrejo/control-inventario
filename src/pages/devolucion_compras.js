@@ -78,9 +78,16 @@ function mostrarListaTransacciones(){
   //eliminar y editar
   document.querySelectorAll('.delete-asi').forEach(item => {
     item.addEventListener('click', event => {
-      let res = item.id.split("-");
-      eliminarTransaccion(res[2]);
-      mostrarListaTransacciones();
+      alertify.confirm("","¿Está seguro de que desea eliminar esta transacción?",
+      function(){
+        let res = item.id.split("-");
+        eliminarTransaccion(res[2]);
+        mostrarListaTransacciones();
+        alertify.success('Transacción Eliminada');
+      },
+      function(){
+        alertify.error('Operación Cancelada');
+      });
     })
   });
   

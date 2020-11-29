@@ -70,7 +70,7 @@ class Default{
     if(entidadBusqueda != null){
       let entidad = (entidadBusqueda.getTipo() == Entidad.CLIENTE) ? 'CLIENTE' : 'PROVEEDOR';
       let entidadesRestantes = this.entidades.filter(entidad => entidad.getCodigo() != codigo);
-      store.getObject().setEntidades(entidadesRestantes);
+      this.setEntidades(entidadesRestantes);
       
       //eliminar transacciones del historial
       
