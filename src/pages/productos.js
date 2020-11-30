@@ -316,11 +316,11 @@ jQuery(document).ready(function($) {
     'use strict';
     
     /* Calender jQuery **/
-    if ($("#datepicker").length) {
+    /*if ($("#datepicker").length) {
         $('#datepicker').datetimepicker({
             format: 'L'
         });
-    }
+    }*/
     
     htmlEventListener('btnAgregarNuevo','click',crearNuevo);
     htmlEventListener('btnAbrirModal','click',limpiarControles);
