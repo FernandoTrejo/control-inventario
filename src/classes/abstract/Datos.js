@@ -1,6 +1,6 @@
 class Datos{
   ordenarPorFecha(conjunto){
-    return conjunto.sort(((a,b)=> a.getFecha() - b.getFecha()));
+    return conjunto.sort(((a,b)=> a.getFecha().getTime() - b.getFecha().getTime()));
   }
   
   unificarDatos(conjunto){
