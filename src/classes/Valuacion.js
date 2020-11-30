@@ -41,7 +41,7 @@ class PROMEDIO{
       let precioPromedio = new Money(0);
       
       //para filtrar los tipos de transacciones 
-      let tiposEvaluar = [Transaccion.COMPRA,Transaccion.INVENTARIO_INICIAL];
+      let tiposEvaluar = [Transaccion.COMPRA,Transaccion.INVENTARIO_INICIAL,Transaccion.DEVOLUCION_COMPRA];
     
       for(let transaccion of this.transacciones){
         let montoUnitario = transaccion.getMontoUnitario();
@@ -142,18 +142,6 @@ class PROMEDIO{
   }
   
   obtenerDatos(){
-    /*let result = {
-      'datos': this.datos02,
-      'inicial': 0,
-      'costoInicial': new Money(0),
-      'entradas': 0,
-      'salidas': 0,
-      'existencias': 0,
-      'costoEntradas': new Money(0),
-      'costoSalidas': new Money(0),
-      'costoExistencias': new Money(0),
-      'precioPromedio': new Money(0)
-    };*/
     
     let result = {
       'datos': this.datos02,

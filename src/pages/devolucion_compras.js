@@ -30,6 +30,12 @@ function obtenerTransacciones(){
   return transacciones;
 }
 
+function obtenerPreciosCompra(codigoProducto){
+  let transacciones = store.getObject().getHistorial().consultarCompras();
+  let transaccionesProducto = transacciones.filter(transaccion => transaccion.getCodigoProducto() == codigoProducto);
+  return transaccionesProducto;
+}
+
 function guardarTransaccion(transaccion){ 
   console.log(transaccion)
   if(htmlValue('inputEditar') == "EDICION"){
@@ -233,11 +239,20 @@ jQuery(document).ready(function($) {
     htmlEventListener('txtDetalle', 'keyup', habilitarBotonGuardar);
     htmlEventListener('dateFechaTransaccion', 'input', habilitarBotonGuardar); // arreglar
     htmlEventListener('numCantidad', 'keyup', habilitarBotonGuardar);
-    htmlEventListener('numPrecio', 'keyup', habilitarBotonGuardar);
+    htmlEventListener('numPrecio', 'change', habilitarBotonGuardar);
     htmlEventListener('selectProveedores', 'change', habilitarBotonGuardar);
     htmlEventListener('selectProductos', 'change', function(){
       habilitarBotonGuardar();
       if(nonEmptyFields([htmlValue('selectProductos')])){
+        let comprasProducto = obtenerPreciosCompra(htmlValue('selectProductos'));
+        let htmlSelectPrecio = `<option value="" selected>Seleccionar Precio</option>`;
+        
+        for(let compra of comprasProducto){
+          htmlSelectPrecio += `<option value="${compra.getMontoUnitario().completeQuantity}" selected>${compra.getMontoUnitario().toString()}</option>`;
+        }
+        
+        htmlRender('numPrecio', htmlSelectPrecio);
+        
         let inventario = obtenerInventario(htmlValue('selectProductos'));
         console.log(inventario)
         let precioPromedio = inventario.getPrecioPromedio();

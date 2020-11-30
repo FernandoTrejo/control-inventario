@@ -139,10 +139,12 @@
                     <small id="txtDetalleError" class="form-text text-danger">
                     </small>
                 </div>
-                <div class="form-group d-none">
-                  <h5 class="mb-0">Precio (sólo lectura)</h5>
+                <div class="form-group">
+                  <h5 class="mb-0">Precio (obligatorio)</h5>
                     <div class="input-group" data-target-input="nearest">
-                        <input type="number" id="numPrecio" step="0.01" min="0" class="form-control" value="0.00" readonly/>
+                        <select class="form-control" id="numPrecio">
+                          
+                        </select>
                         <div class="input-group-append" data-target="" data-toggle="">
                             <div class="input-group-text"><i class="fas fa-dollar-sign"></i></div>
                         </div>
