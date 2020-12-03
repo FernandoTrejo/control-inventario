@@ -32,6 +32,7 @@ function obtenerTransacciones(){
 
 function obtenerPreciosCompra(codigoProducto){
   let transacciones = store.getObject().getHistorial().consultarCompras();
+  transacciones = transacciones.concat(store.getObject().getHistorial().consultarIniciales());
   let transaccionesProducto = transacciones.filter(transaccion => transaccion.getCodigoProducto() == codigoProducto);
   return transaccionesProducto;
 }

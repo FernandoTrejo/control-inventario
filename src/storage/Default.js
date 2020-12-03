@@ -46,9 +46,12 @@ class Default{
   transaccionesEntidad(codigo, tipo){
     let entidad = this.buscarEntidad(codigo, tipo);
     let transacciones = [];
+    
+    let tiposTransacciones = (tipo == Entidad.CLIENTE) ? [Transaccion.VENTA,Transaccion.DEVOLUCION_VENTA] : [Transaccion.DEVOLUCION_COMPRA,Transaccion.COMPRA, Transaccion.INVENTARIO_INICIAL];
+    
     if(entidad != null){
       let datos = this.historial.exportarDatos();
-      transacciones = datos.filter(transaccion => transaccion.getEntidad() == codigo);
+      transacciones = datos.filter(transaccion => transaccion.getEntidad() == codigo && tiposTransacciones.includes(transaccion.getTipoTransaccion()));
     }
     return transacciones;
   }
