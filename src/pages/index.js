@@ -67,10 +67,10 @@ function mostrarInventario(codigo){
 }
 
 function mostrarDatosFinales(costoInventarioFinal, existencias, precioPromedio, costoVentas){
-  htmlRender('cardInventarioFinal', simpleTable('Inventario Final', costoInventarioFinal));
-  htmlRender('cardExistencias', simpleTable('Existencias', existencias));
-  htmlRender('cardPrecioPromedio', simpleTable('Costo Promedio', precioPromedio));
-  htmlRender('cardCostoVentas', simpleTable('Costo de Ventas', costoVentas));
+  htmlRender('cardInventarioFinal', simpleTable('INVENTARIO FINAL', costoInventarioFinal));
+  htmlRender('cardExistencias', simpleTable('EXISTENCIAS', existencias));
+  htmlRender('cardPrecioPromedio', simpleTable('COSTO PROMEDIO', precioPromedio));
+  htmlRender('cardCostoVentas', simpleTable('COSTO DE VENTAS', costoVentas));
 }
 
 function simpleTable(header,value){
