@@ -249,7 +249,7 @@ jQuery(document).ready(function($) {
         let htmlSelectPrecio = `<option value="" selected>Seleccionar Precio</option>`;
         
         for(let compra of comprasProducto){
-          htmlSelectPrecio += `<option value="${compra.getMontoUnitario().completeQuantity}" selected>${compra.getMontoUnitario().toString()}</option>`;
+          htmlSelectPrecio += `<option value="${compra.getMontoUnitario().completeQuantity}">${compra.getMontoUnitario().toString()}</option>`;
         }
         
         htmlRender('numPrecio', htmlSelectPrecio);
